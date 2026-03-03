@@ -1,3 +1,4 @@
+import http from 'http';
 import { createServer as createViteServer } from 'vite';
 import express from 'express';
 import { readFileSync } from 'fs';
@@ -21,8 +22,9 @@ const PORT = getPort();
 
 async function start() {
   const app = express();
+  const server = http.createServer(app);
   const vite = await createViteServer({
-    server: { middlewareMode: true },
+    server: { middlewareMode: true, hmr: { server } },
     appType: 'custom',
   });
   app.use(vite.middlewares);
@@ -48,7 +50,7 @@ async function start() {
     }
   });
 
-  const server = app.listen(PORT, HOST, () => {
+  server.listen(PORT, HOST, () => {
     const actualPort = server.address().port;
     console.log(`SSR dev server at http://${HOST}:${actualPort}`);
   });
