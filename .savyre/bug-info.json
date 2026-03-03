@@ -1,0 +1,34 @@
+{
+  "description": "On the home page, the flight search form does not appear; the hero section where users enter origin, destination, date and passengers is broken and users cannot search for flights.",
+  "expectedOutcome": "The flight search form is visible and usable on the landing page. Users can select origin and destination, pick a date, set passenger count, and submit to see search results.",
+  "hint": "The form uses a library that shares state through React context. Ensure any component that consumes that context is rendered inside the correct provider.",
+  "difficulty": "Easy",
+  "bugFilePath": "src/components/SearchForm/SearchForm.jsx",
+  "solution": "SearchFormFields calls useFormContext() from react-hook-form but is rendered without a FormProvider. useFormContext() throws when there is no provider, so the form subtree crashes and the UI shows an error fallback. Fix: wrap the form content that depends on context with FormProvider and pass the methods from useForm() (e.g. <FormProvider {...methods}><SearchFormFields /></FormProvider>).",
+  "solutionCode": "Add FormProvider to the react-hook-form import. In SearchForm, wrap SearchFormFields with FormProvider passing the methods object:\n\nimport { useForm, useFormContext, Controller, FormProvider } from 'react-hook-form';\n\n// Inside SearchForm return:\nreturn (\n  <form onSubmit={methods.handleSubmit(onSubmitForm)} className=\"card\" role=\"search\" aria-label=\"Flight search\">\n    <FormProvider {...methods}>\n      <SearchFormFields />\n    </FormProvider>\n    <button type=\"submit\" className=\"btn btn-primary\">\n      Search Flights\n    </button>\n  </form>\n);",
+  "playwrightTests": [
+    {
+      "name": "should display the flight search form on the landing page",
+      "description": "Fails when bug is present (form crashes); passes when FormProvider is added and form renders.",
+      "expectation": "Form with role=search and Search Flights button is visible."
+    },
+    {
+      "name": "should submit valid search and navigate to search results",
+      "description": "Fills origin, destination, date, submits; expects redirect to /search and results or empty state.",
+      "expectation": "After submitting valid data, URL is /search and page shows search-related content."
+    },
+    {
+      "name": "should show validation errors when submitting empty form",
+      "description": "Submit without filling required fields; form should show validation messages and not navigate.",
+      "expectation": "Validation errors appear, user remains on landing page."
+    }
+  ],
+  "playwrightTestSnippets": [
+    "await expect(page.getByRole('search')).toBeVisible();",
+    "await page.getByRole('button', { name: /search flights/i }).click();",
+    "await page.getByLabel(/from/i).selectOption({ label: /Delhi/i });",
+    "await page.getByLabel(/to/i).selectOption({ label: /Mumbai/i });",
+    "await page.getByLabel(/date/i).fill('2026-12-15');",
+    "await expect(page).toHaveURL(/\\/search/);"
+  ]
+}
