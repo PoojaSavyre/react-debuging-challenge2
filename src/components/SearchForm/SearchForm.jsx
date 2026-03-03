@@ -1,20 +1,27 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
 import { useBooking } from '../../context/BookingContext';
 import { SearchFormField } from './SearchFormField';
 import { AIRPORTS } from '../../data/airports';
 
+const initialFormState = {
+  origin: '',
+  destination: '',
+  date: '',
+  passengers: 1,
+};
+
 export function SearchForm({ onSubmit }) {
   const navigate = useNavigate();
   const { setSearchParams } = useBooking();
-  const [formData, setFormData] = useState({
-    origin: '',
-    destination: '',
-    date: '',
-    passengers: 1,
-  });
+  const [formData, setFormData] = useState(initialFormState);
   const [errors, setErrors] = useState({});
+
+  useEffect(() => {
+    setFormData(initialFormState);
+    setErrors({});
+  }, [formData.origin]);
 
   const validate = () => {
     const newErrors = {};

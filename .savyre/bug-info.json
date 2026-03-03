@@ -1,0 +1,28 @@
+{
+  "description": "On the landing page, when the user selects an origin (From) in the flight search form, the form immediately clears and the selected origin (and any other fields) are lost. The user cannot complete the form because choosing an origin triggers a full reset.",
+  "expectedOutcome": "Selecting an origin (From) should keep that value and allow the user to then choose destination, date, and passengers and submit the search without the form resetting.",
+  "hint": "Look for an effect that runs when part of the form state changes and ask whether it should be resetting the entire form.",
+  "difficulty": "Medium",
+  "bugFilePath": "src/components/SearchForm/SearchForm.jsx",
+  "solution": "SearchForm has a useEffect with dependency [formData.origin] that resets the entire form (setFormData(initialFormState), setErrors({})). So whenever the user selects an origin, formData.origin changes, the effect runs, and the form is cleared. This is wrong: the form should not reset when the user edits the origin field. Fix: remove this useEffect entirely. The initial state is already set by useState(initialFormState); there is no valid reason to reset the form when origin changes.",
+  "solutionCode": "Remove the useEffect that depends on [formData.origin] and resets form state. Delete the effect block; keep useState(initialFormState) for initial state only.",
+  "playwrightTests": [
+    {
+      "name": "landing page shows search form",
+      "description": "Landing page loads and the flight search form (origin, destination, date, passengers) is visible and submittable."
+    },
+    {
+      "name": "search form retains origin after selecting it",
+      "description": "User selects an origin (From) in the dropdown; the origin field must still show that value. Fails when the bug is present (form resets and origin is cleared); passes when fixed."
+    },
+    {
+      "name": "user can submit search from landing and see results",
+      "description": "User fills origin, destination, date, clicks Search Flights, and is taken to search results with flights listed. Fails when the bug is present because selecting origin clears the form."
+    }
+  ],
+  "playwrightTestSnippets": [
+    "test('landing page shows search form', async ({ page }) => { await page.goto('/'); await expect(page.getByRole('search', { name: /flight search/i })).toBeVisible(); await expect(page.getByLabel(/from/i)).toBeVisible(); });",
+    "test('search form retains origin after selecting it', async ({ page }) => { await page.goto('/'); await page.getByLabel(/from/i).selectOption('DEL'); await expect(page.getByLabel(/from/i)).toHaveValue('DEL'); });",
+    "test('user can submit search from landing and see results', async ({ page }) => { await page.goto('/'); await page.getByLabel(/from/i).selectOption('DEL'); await page.getByLabel(/to/i).selectOption('BOM'); await page.getByLabel(/date/i).fill('2025-06-15'); await page.getByRole('button', { name: /search flights/i }).click(); await expect(page).toHaveURL(/\\/search/); await expect(page.getByText(/delhi|mumbai|flights?|results|searching/i)).toBeVisible({ timeout: 10000 }); });"
+  ]
+}
