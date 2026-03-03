@@ -5,7 +5,7 @@ import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const PORT = 3099;
+const PORT = Number(process.env.SSR_PORT) || 3099;
 const HOST = '127.0.0.1';
 
 async function start() {
