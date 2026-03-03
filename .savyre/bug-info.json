@@ -1,0 +1,30 @@
+{
+  "description": "When a user opens the Offers page directly (e.g. by visiting /offers or from a bookmark), the page stays on 'Loading offers...' and never shows the list of offers. The offers never appear.",
+  "expectedOutcome": "When visiting /offers directly, the page should show the Offers & deals heading and the list of offer cards (e.g. First booking discount, Weekend getaway, No hidden fees) without getting stuck on a loading state.",
+  "hint": "The page expects its data to be available on first paint. When the app is rendered on the server, the server is responsible for loading data for that route and passing it into the response so the client can show it without a separate request. Check where route-specific data is supposed to be loaded before sending the HTML.",
+  "difficulty": "Hard",
+  "bugFilePath": "ssr-dev-server.js",
+  "solution": "The SSR server never pre-fetches data for the /offers route. It always passes an empty initialData object to render(), so the server-rendered HTML shows the loading state and the client receives no preloaded data (window.__PRELOADED__ is {}). The Offers page only uses data from PreloadContext; when the server sends an empty preload payload it does not fetch on the client (by design, to avoid double fetch when data was pre-fetched). So the page stays on Loading offers. Fix: before calling render(), when the request pathname is /offers, load the offers data (e.g. from the shared offers-data.js module) and set initialData = { offers }. Then the server renders the page with offers, and the same data is serialized into window.__PRELOADED__ so the client hydrates with the same content.",
+  "solutionCode": "Add after 'let initialData = {};' the block: if (pathname === '/offers') { const { offers } = await import('./offers-data.js'); initialData = { offers }; }",
+  "playwrightTests": [
+    {
+      "name": "direct visit to /offers shows offers content without staying on loading",
+      "description": "When the user navigates directly to /offers, the page should show the offers list (e.g. First booking discount) within a reasonable timeout, not stuck on Loading offers.",
+      "expectFailureWhenBugPresent": true
+    },
+    {
+      "name": "offers page shows at least one offer card when data is pre-fetched",
+      "description": "The offers page should display at least one offer card.",
+      "expectFailureWhenBugPresent": true
+    },
+    {
+      "name": "home route still shows landing page",
+      "description": "Visiting / should show the landing page. Regression.",
+      "expectFailureWhenBugPresent": false
+    }
+  ],
+  "playwrightTestSnippets": [
+    "await page.goto('/offers'); await expect(page.getByText(/first booking discount/i)).toBeVisible({ timeout: 10000 });",
+    "await page.goto('/'); await expect(page.getByRole('heading', { name: /fly with confidence/i })).toBeVisible();"
+  ]
+}
