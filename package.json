@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "node ssr-dev-server.js",
     "dev:client": "vite --port 5173 --host 127.0.0.1",
-    "dev:e2e": "node ssr-dev-server.js",
+    "dev:e2e": "node ssr-dev-server.js --port 3099",
     "build": "vite build",
     "preview": "vite preview",
     "server": "cd server && node index.js",

@@ -5,8 +5,19 @@ import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const PORT = Number(process.env.SSR_PORT) || 3099;
 const HOST = '127.0.0.1';
+
+function getPort() {
+  const portIndex = process.argv.indexOf('--port');
+  if (portIndex !== -1 && process.argv[portIndex + 1] != null) {
+    return Number(process.argv[portIndex + 1]);
+  }
+  const envPort = Number(process.env.SSR_PORT) || Number(process.env.PORT);
+  if (envPort && !Number.isNaN(envPort)) return envPort;
+  return 0;
+}
+
+const PORT = getPort();
 
 async function start() {
   const app = express();
@@ -37,8 +48,9 @@ async function start() {
     }
   });
 
-  app.listen(PORT, HOST, () => {
-    console.log(`SSR dev server at http://${HOST}:${PORT}`);
+  const server = app.listen(PORT, HOST, () => {
+    const actualPort = server.address().port;
+    console.log(`SSR dev server at http://${HOST}:${actualPort}`);
   });
 }
 
