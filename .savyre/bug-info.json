@@ -1,0 +1,34 @@
+{
+  "description": "After filling in origin, destination, date, and passengers and clicking Search Flights, the form shows validation errors (e.g. Origin is required, Destination is required, Date is required) and does not navigate to the search results page.",
+  "expectedOutcome": "After filling all required fields and clicking Search Flights, validation passes, search params are stored, and the user is taken to the search results page showing flights for the chosen route.",
+  "hint": "Consider what the submit handler closes over and when that value was captured. Dependency arrays matter for callbacks that read state.",
+  "difficulty": "Medium",
+  "bugFilePath": "src/components/SearchForm/SearchForm.jsx",
+  "solution": "The root cause is a stale state reference: handleSubmit is wrapped in useCallback with an empty dependency array ([]). The callback therefore captures the initial formData (empty object) and the initial validate function (which also closes over that same empty formData). When the user fills the form and submits, the handler that runs is still the one from the first render, so validate() sees empty formData and fails, and setSearchParams would receive empty formData if validation were bypassed. Fix: either remove useCallback and use a regular function so the handler always sees the latest formData and validate, or add the correct dependencies to useCallback: [formData, navigate, onSubmit, setSearchParams]. Note: validate itself reads formData, so the handler must be recreated when formData (or validate) changes. The minimal fix is to add the proper dependencies to useCallback.",
+  "solutionCode": "  const handleSubmit = useCallback((e) => {\n    e.preventDefault();\n    if (!validate()) return;\n    setSearchParams(formData);\n    if (onSubmit) onSubmit(formData);\n    else navigate('/search');\n  }, [formData, navigate, onSubmit, setSearchParams]);",
+  "playwrightTests": [
+    {
+      "name": "search form submit with valid data navigates to search and shows results",
+      "description": "Fills origin, destination, date, passengers and submits; expects navigation to /search and results or search header (fails when bug present: validation errors show instead)",
+      "flow": "Fill form -> Submit -> Expect URL /search and no validation errors on page"
+    },
+    {
+      "name": "search form shows validation errors when required fields are empty",
+      "description": "Submits without filling required fields; expects validation messages and no navigation",
+      "flow": "Submit empty form -> Expect validation errors, stay on same page"
+    },
+    {
+      "name": "search form accepts valid input and stores search criteria",
+      "description": "After successful submit, search results page shows the chosen origin and destination",
+      "flow": "Fill DEL, BOM, future date, 1 passenger -> Submit -> Expect page to show DEL and BOM in header"
+    }
+  ],
+  "playwrightTestSnippets": [
+    "await page.getByRole('combobox', { name: /from/i }).selectOption('DEL');",
+    "await page.getByRole('combobox', { name: /to/i }).selectOption('BOM');",
+    "await page.getByLabel(/date/i).fill('2025-06-15');",
+    "await page.getByRole('button', { name: /search flights/i }).click();",
+    "await expect(page).toHaveURL(/\\/search/);",
+    "await expect(page.getByText(/DEL.*BOM|origin.*destination/i)).toBeVisible();"
+  ]
+}

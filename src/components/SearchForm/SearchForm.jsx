@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
 import { useBooking } from '../../context/BookingContext';
@@ -31,13 +31,13 @@ export function SearchForm({ onSubmit }) {
     return Object.keys(newErrors).length === 0;
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = useCallback((e) => {
     e.preventDefault();
     if (!validate()) return;
     setSearchParams(formData);
     if (onSubmit) onSubmit(formData);
     else navigate('/search');
-  };
+  }, []);
 
   const handleChange = (name, value) => {
     setFormData((prev) => {
