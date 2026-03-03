@@ -1,0 +1,31 @@
+{
+  "description": "When a user fills in the flight search form (origin, destination, date, passengers) on the home page and clicks 'Search Flights', nothing happens: they stay on the same page and do not see the search results or the search page. The app does not navigate to the search flow.",
+  "expectedOutcome": "After filling the search form and clicking 'Search Flights', the user should be taken to the search page (/search) where they see search results or the search form in the search context. The main flow from landing to search must work.",
+  "hint": "Navigation to the search page is handled in a hook that runs an effect when it has pending form data. The effect depends on both that pending state and the search params from context. Context updates asynchronously—if the effect clears the pending state too early, navigation never runs.",
+  "difficulty": "Medium",
+  "bugFilePath": "src/hooks/useSearchSubmit.js",
+  "solution": "useSearchSubmit sets pendingFormData when the user submits without a custom onSubmit. A useEffect runs when pendingFormData or searchParams change and is supposed to navigate to /search when both are set, then clear pending state. The bug is that the effect never calls navigate()—it only clears pendingFormData in both branches. So the user never gets taken to the search page. Fix: in the branch where searchParams have origin and destination, call navigate('/search') before setPendingFormData(null).",
+  "solutionCode": "  useEffect(() => {\n    if (!pendingFormData) return;\n    if (searchParams?.origin && searchParams?.destination) {\n      navigate('/search');\n      setPendingFormData(null);\n    } else {\n      setPendingFormData(null);\n    }\n  }, [pendingFormData, searchParams, navigate]);",
+  "playwrightTests": [
+    {
+      "name": "submitting search form navigates to search page",
+      "description": "After filling origin, destination, date and clicking Search Flights, the user should be on /search and see the search page (e.g. Search flights heading).",
+      "expectFailureWhenBugPresent": true
+    },
+    {
+      "name": "search page shows search flights heading when visited directly",
+      "description": "Visiting /search directly should show the search page with Search flights heading (or search form). Regression.",
+      "expectFailureWhenBugPresent": false
+    },
+    {
+      "name": "home shows landing page",
+      "description": "Visiting / shows the landing page with Fly with confidence. Regression.",
+      "expectFailureWhenBugPresent": false
+    }
+  ],
+  "playwrightTestSnippets": [
+    "await page.goto('/');\nawait page.getByLabel(/from/i).selectOption('DEL');\nawait page.getByLabel(/to/i).selectOption('BOM');\nawait page.getByLabel(/date/i).fill('2025-06-15');\nawait page.getByRole('button', { name: /search flights/i }).click();\nawait expect(page).toHaveURL(/\\/search/);\nawait expect(page.getByRole('heading', { name: /search flights/i })).toBeVisible();",
+    "await page.goto('/search');\nawait expect(page.getByRole('heading', { name: /search flights/i })).toBeVisible();",
+    "await page.goto('/');\nawait expect(page.getByRole('heading', { name: /fly with confidence/i })).toBeVisible();"
+  ]
+}

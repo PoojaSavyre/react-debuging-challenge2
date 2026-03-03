@@ -1,13 +1,11 @@
 import React, { useState, useMemo } from 'react';
 import PropTypes from 'prop-types';
-import { useNavigate } from 'react-router-dom';
-import { useBooking } from '../../context/BookingContext';
+import { useSearchSubmit } from '../../hooks/useSearchSubmit';
 import { SearchFormField } from './SearchFormField';
 import { AIRPORTS } from '../../data/airports';
 
 export function SearchForm({ onSubmit }) {
-  const navigate = useNavigate();
-  const { setSearchParams } = useBooking();
+  const { submitFormData } = useSearchSubmit(onSubmit);
   const [formData, setFormData] = useState({
     origin: '',
     destination: '',
@@ -34,9 +32,7 @@ export function SearchForm({ onSubmit }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!validate()) return;
-    setSearchParams(formData);
-    if (onSubmit) onSubmit(formData);
-    else navigate('/search');
+    submitFormData(formData);
   };
 
   const handleChange = (name, value) => {
