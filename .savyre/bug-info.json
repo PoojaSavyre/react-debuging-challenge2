@@ -1,0 +1,28 @@
+{
+  "description": "When the user selects both an origin and a destination airport in the flight search form on the landing page, the page stops working: an error is shown or the content goes blank, and the user cannot submit the form or reach the search results page.",
+  "expectedOutcome": "The user can fill in origin, destination, date, and passengers, click Search Flights, and be taken to the search results page where they see flights (or a message) for the chosen route.",
+  "hint": "React requires the same hooks to run in the same order on every render. Consider whether any hook is only executed when a condition is true.",
+  "difficulty": "Hard",
+  "bugFilePath": "src/components/SearchForm/SearchForm.jsx",
+  "solution": "The component calls useEffect conditionally (inside `if (formData.origin && formData.destination)`). That violates the Rules of Hooks: hooks must be called unconditionally at the top level. When the user selects both origin and destination, the next render runs one more hook than the previous render, so React throws 'Rendered more hooks than during the previous render' and the flow breaks. Fix: remove the conditional useEffect block (and the useEffect import if unused). Search params are already set on form submit; the effect was redundant and incorrectly implemented.",
+  "solutionCode": "Remove the useEffect import from line 1 (revert to: import React, { useState, useMemo } from 'react';). Remove the entire conditional block that wraps useEffect (the if (formData.origin && formData.destination) { ... } block with the useEffect inside).",
+  "playwrightTests": [
+    {
+      "name": "search form submits and navigates to search results when origin, destination and date are filled",
+      "description": "Fails when bug is present (page breaks after selecting both airports). Passes when fixed."
+    },
+    {
+      "name": "landing page shows search form and user can select origin without breaking",
+      "description": "Regression: form is visible and selecting only origin does not break the page."
+    },
+    {
+      "name": "search results page shows route and results after successful form submit",
+      "description": "Full flow: submit valid form and verify search results page displays the route and content."
+    }
+  ],
+  "playwrightTestSnippets": [
+    "test('search form submits and navigates to search results when origin, destination and date are filled', async ({ page }) => { ... });",
+    "test('landing page shows search form and user can select origin without breaking', async ({ page }) => { ... });",
+    "test('search results page shows route and results after successful form submit', async ({ page }) => { ... });"
+  ]
+}

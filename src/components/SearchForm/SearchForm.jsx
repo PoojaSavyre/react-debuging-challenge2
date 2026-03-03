@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
 import { useBooking } from '../../context/BookingContext';
@@ -62,6 +62,12 @@ export function SearchForm({ onSubmit }) {
         : AIRPORTS.map((a) => ({ value: a.code, label: `${a.code} - ${a.city}` })),
     [formData.origin]
   );
+
+  if (formData.origin && formData.destination) {
+    useEffect(() => {
+      setSearchParams(formData);
+    }, [formData.origin, formData.destination, formData.date, formData.passengers, setSearchParams]);
+  }
 
   return (
     <form onSubmit={handleSubmit} className="card" role="search" aria-label="Flight search">
