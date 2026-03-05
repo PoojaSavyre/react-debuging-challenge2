@@ -10,8 +10,8 @@ export function SeatSelectionPage() {
   const navigate = useNavigate();
   const { passengers, selectedSeats, setSelectedSeat } = useBooking();
   const [currentPassengerIndex, setCurrentPassengerIndex] = useState(0);
+  const [selectedSeatId, setSelectedSeatId] = useState(null);
   const currentPassenger = passengers[currentPassengerIndex];
-  const currentSeat = currentPassenger ? selectedSeats[currentPassenger.id] : null;
 
   useEffect(() => {
     if (!passengers?.length) {
@@ -21,6 +21,7 @@ export function SeatSelectionPage() {
 
   const handleSelectSeat = (seatId) => {
     if (!currentPassenger) return;
+    setSelectedSeatId(seatId);
     setSelectedSeat(currentPassenger.id, seatId);
   };
 
@@ -57,7 +58,7 @@ export function SeatSelectionPage() {
       </p>
       <div className="card">
         <SeatMap
-          selectedSeatId={currentSeat}
+          selectedSeatId={selectedSeatId}
           occupiedSeatIds={OCCUPIED}
           onSelectSeat={handleSelectSeat}
         />
@@ -75,7 +76,7 @@ export function SeatSelectionPage() {
           className="btn btn-primary"
           style={{ marginLeft: '0.5rem' }}
           onClick={handleNext}
-          disabled={!currentSeat && currentPassengerIndex === passengers.length - 1}
+          disabled={!selectedSeats[currentPassenger?.id] && currentPassengerIndex === passengers.length - 1}
         >
           {currentPassengerIndex < passengers.length - 1 ? 'Next passenger' : 'Continue to baggage'}
         </button>

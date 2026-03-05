@@ -1,0 +1,31 @@
+{
+  "description": "On the seat selection page, when the user selects a seat for Passenger 1, then clicks Next and selects a seat for Passenger 2, then clicks Back to return to Passenger 1, the map shows Passenger 2's selected seat instead of Passenger 1's. The selection the user made for Passenger 1 appears lost or wrong.",
+  "expectedOutcome": "Each passenger's seat selection is remembered. When the user clicks Back to an earlier passenger, the map should show that passenger's chosen seat (e.g. A1 for Passenger 1), not another passenger's seat.",
+  "hint": "When the same component (e.g. the seat map) is used for different 'instances' (each passenger), the state that belongs to each instance should be stored per instance, not in a single shared variable. Check where the selected seat is kept and whether it is keyed by passenger.",
+  "difficulty": "Easy",
+  "bugFilePath": "src/pages/SeatSelectionPage.jsx",
+  "solution": "SeatSelectionPage used a single local state selectedSeatId for the seat map and did not derive it from the current passenger's stored selection. So when switching passengers (Next/Back), the displayed selection was always the last selected seat, not the selection for the current passenger. The fix is to remove the local state and derive the displayed selection from context per passenger: currentSeat = selectedSeats[currentPassenger?.id], pass currentSeat to SeatMap, and in handleSelectSeat only call setSelectedSeat(currentPassenger.id, seatId) without keeping separate local state.",
+  "solutionCode": "  const currentPassenger = passengers[currentPassengerIndex];\n  const currentSeat = currentPassenger ? selectedSeats[currentPassenger.id] : null;\n\n  const handleSelectSeat = (seatId) => {\n    if (!currentPassenger) return;\n    setSelectedSeat(currentPassenger.id, seatId);\n  };\n  // ... SeatMap selectedSeatId={currentSeat} ... disabled={!currentSeat && ...}",
+  "playwrightTests": [
+    {
+      "name": "going back to previous passenger shows that passenger's selected seat",
+      "description": "Fails when bug is present (shows wrong seat); passes when fixed.",
+      "flow": "Log in, search with 2 passengers, fill passengers, go to seats; select A1 for Passenger 1, Next; select B2 for Passenger 2, Back; assert Seat A1 is shown as selected."
+    },
+    {
+      "name": "seat selection page allows selecting a seat and continuing",
+      "description": "Regression: select seat and Next works.",
+      "flow": "Reach seat selection, select a seat, click Next or Continue, assert navigation."
+    },
+    {
+      "name": "seat map shows selected state for current passenger",
+      "description": "Regression: selection is visible.",
+      "flow": "On seat page, select a seat, assert that seat has selected state (aria-pressed or label)."
+    }
+  ],
+  "playwrightTestSnippets": [
+    "await page.getByRole('button', { name: 'Seat A1 available' }).click();\nawait page.getByRole('button', { name: 'Next passenger' }).click();\nawait page.getByRole('button', { name: 'Seat B2 available' }).click();\nawait page.getByRole('button', { name: 'Back' }).click();\nawait expect(page.getByRole('button', { name: 'Seat A1 selected' })).toBeVisible();",
+    "await page.getByRole('button', { name: 'Seat A1 available' }).click();\nawait page.getByRole('button', { name: 'Continue to baggage' }).click();\nawait expect(page).toHaveURL(/\\/baggage/);",
+    "await page.getByRole('button', { name: 'Seat A1 available' }).click();\nawait expect(page.getByRole('button', { name: 'Seat A1 selected' })).toBeVisible();"
+  ]
+}
