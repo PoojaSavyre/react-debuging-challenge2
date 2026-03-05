@@ -1,0 +1,31 @@
+{
+  "description": "On the flight detail page, a 'Viewing for Xs' line shows how long the user has been on the page. If the user opens a flight, then goes back to results and opens another flight (or the same one again), the viewing time is wrong: it may show a high number right away (e.g. 'Viewing for 12s' when they just opened the page) or the number may increase too quickly. The timer does not reset correctly for each visit.",
+  "expectedOutcome": "'Viewing for Xs' should reflect how long the user has been on the current flight detail page only. Each time they open a flight (or open it again), the counter should start from 0 and increase by 1 every second. Leaving the page should stop the timer.",
+  "hint": "When a component sets up a side effect (e.g. a timer) in an effect, it should tear that effect down when the component unmounts. If the timer is not cleared, it keeps running and can affect the next time the page is shown.",
+  "difficulty": "Easy",
+  "bugFilePath": "src/pages/FlightDetailPage.jsx",
+  "solution": "FlightDetailPage used a module-level viewingSeconds and a setInterval to update 'Viewing for Xs' but did not return a cleanup function from the effect. When the user navigated away, the component unmounted but the interval kept running, so viewingSeconds kept increasing and the next time the user opened any flight detail they saw the accumulated value (wrong) and had two intervals updating it (double speed). The fix is to (1) return a cleanup that clears the interval: return () => clearInterval(id); (2) reset viewingSeconds and viewingTime when the effect runs (on mount) so each visit starts from 0.",
+  "solutionCode": "  useEffect(() => {\n    viewingSeconds = 0;\n    setViewingTime(0);\n    const id = setInterval(() => {\n      viewingSeconds += 1;\n      setViewingTime(viewingSeconds);\n    }, 1000);\n    return () => clearInterval(id);\n  }, []);",
+  "playwrightTests": [
+    {
+      "name": "viewing time starts from zero when opening a flight detail",
+      "description": "Fails when bug is present (wrong value after re-entry); passes when fixed.",
+      "flow": "Open a flight detail, wait a few seconds, go back; open any flight detail again; assert 'Viewing for' shows 0 or 1 (not a large number)."
+    },
+    {
+      "name": "flight detail page loads and user can navigate back to results",
+      "description": "Regression: detail page and navigation work.",
+      "flow": "Search, click a flight, assert detail page loads and shows Viewing for; click Back to results, assert on search page."
+    },
+    {
+      "name": "user can open flight detail and continue to passenger details",
+      "description": "Regression: flow from detail to passengers works.",
+      "flow": "From detail page click Continue to passenger details, assert URL is /passengers."
+    }
+  ],
+  "playwrightTestSnippets": [
+    "await page.getByRole('link', { name: 'Select' }).first().click();\nawait expect(page.getByText(/Viewing for/)).toBeVisible();\nawait page.waitForTimeout(3000);\nawait page.getByRole('button', { name: 'Back to results' }).click();\nawait page.getByRole('link', { name: 'Select' }).first().click();\nawait expect(page.getByText(/Viewing for 0s|Viewing for 1s/)).toBeVisible();",
+    "await page.getByRole('link', { name: 'Select' }).first().click();\nawait expect(page).toHaveURL(/\\/flight\\//);\nawait expect(page.getByText(/Viewing for/)).toBeVisible();\nawait page.getByRole('button', { name: 'Back to results' }).click();\nawait expect(page).toHaveURL(/\\/search/);",
+    "await page.getByRole('button', { name: 'Continue to passenger details' }).click();\nawait expect(page).toHaveURL(/\\/passengers/);"
+  ]
+}

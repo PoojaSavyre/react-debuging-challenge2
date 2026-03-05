@@ -4,6 +4,8 @@ import { useBooking } from '../context/BookingContext';
 import { apiRequest } from '../api/client';
 import { PageHeader } from '../components/PageHeader';
 
+let viewingSeconds = 0;
+
 export function FlightDetailPage() {
   const { flightId } = useParams();
   const navigate = useNavigate();
@@ -11,6 +13,14 @@ export function FlightDetailPage() {
   const [flight, setFlight] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [viewingTime, setViewingTime] = useState(0);
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      viewingSeconds += 1;
+      setViewingTime(viewingSeconds);
+    }, 1000);
+  }, []);
 
   useEffect(() => {
     let cancelled = false;
@@ -90,6 +100,9 @@ export function FlightDetailPage() {
           <p>Departure: {dep.toLocaleString()}</p>
           <p>Arrival: {arr.toLocaleString()}</p>
           <p>Duration: {hours}h {mins}m · {flight.seatsAvailable} seats available</p>
+          <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)' }}>
+            Viewing for {viewingTime}s
+          </p>
           <div style={{ marginTop: '1.5rem', display: 'flex', gap: '0.75rem' }}>
             <button type="button" className="btn btn-primary" onClick={handleSelect}>
               Continue to passenger details
