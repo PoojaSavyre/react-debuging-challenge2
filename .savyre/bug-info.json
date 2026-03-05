@@ -1,0 +1,20 @@
+{
+  "description": "On the Baggage page, after adding several items to 'Your baggage', clicking 'Remove' on the first item removes the last item instead. The first item stays and the last one disappears.",
+  "expectedOutcome": "Clicking 'Remove' on an item should remove that specific item from the list. The first Remove button should remove the first item, the second Remove the second item, and so on.",
+  "hint": "When every button in a list does the same wrong thing (e.g. all remove the last item), check how the click handler gets the current item. Refs are not the right way to know 'which item was clicked' inside a list.",
+  "difficulty": "Easy",
+  "competency": "React Component Refs Usage",
+  "bugFilePath": "src/pages/BaggagePage.jsx",
+  "solution": "A single ref (currentItemRef) was updated in the map loop and the same onClick handler was used for every Remove button. The handler used the ref to get the item id, so by the time any button was clicked the ref always pointed to the last item. The fix is to avoid using a ref for the removed item: pass the item id in the handler, e.g. onClick={() => removeItem(item.id)} so each button closes over its own item.",
+  "solutionCode": "selectedItems.map((item) => (\n  <div key={item.id} ...>\n    <span>{item.label} – {item.weight}</span>\n    <button type=\"button\" onClick={() => removeItem(item.id)} className=\"btn btn-secondary\">\n      Remove\n    </button>\n  </div>\n));\n// Remove currentItemRef and do not set ref in the loop.",
+  "playwrightTests": [
+    {
+      "name": "clicking Remove on first item removes that item (not the last)",
+      "description": "Fails when bug is present (first Remove removes last item); passes when fixed.",
+      "flow": "Go to Baggage, add Carry-on and Checked bag (1 piece), click first Remove, assert first item (Carry-on) is gone and second (Checked bag) remains."
+    }
+  ],
+  "playwrightTestSnippets": [
+    "await page.goto('/baggage');\nconst dropZone = page.getByTestId('baggage-drop-zone');\nawait page.locator('[draggable=\"true\"]').filter({ hasText: 'Carry-on (1 piece)' }).dragTo(dropZone);\nawait page.locator('[draggable=\"true\"]').filter({ hasText: 'Checked bag (1 piece)' }).dragTo(dropZone);\nawait dropZone.getByRole('button', { name: 'Remove' }).first().click();\nawait expect(dropZone.getByText('Checked bag (1 piece)')).toBeVisible();\nawait expect(dropZone.getByText('Carry-on (1 piece)')).not.toBeVisible();"
+  ]
+}

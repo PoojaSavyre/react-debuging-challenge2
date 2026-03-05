@@ -1,0 +1,46 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e2]:
+  - navigation [ref=e3]:
+    - generic [ref=e4]:
+      - generic [ref=e5]:
+        - link "SkyBook" [ref=e6] [cursor=pointer]:
+          - /url: /
+        - link "Search" [ref=e7] [cursor=pointer]:
+          - /url: /search
+        - link "About" [ref=e8] [cursor=pointer]:
+          - /url: /about
+        - link "Contact" [ref=e9] [cursor=pointer]:
+          - /url: /contact
+        - link "Help" [ref=e10] [cursor=pointer]:
+          - /url: /help
+        - link "Destinations" [ref=e11] [cursor=pointer]:
+          - /url: /destinations
+        - link "Offers" [ref=e12] [cursor=pointer]:
+          - /url: /offers
+        - link "My Bookings" [ref=e13] [cursor=pointer]:
+          - /url: /my-bookings
+      - generic [ref=e14]:
+        - generic [ref=e15]: Test
+        - button "Logout" [ref=e16] [cursor=pointer]
+  - main [ref=e17]:
+    - generic [ref=e19]:
+      - heading "Baggage" [level=1] [ref=e20]
+      - paragraph [ref=e21]: Add baggage options to your booking. Drag items into the box below.
+    - generic [ref=e23]:
+      - paragraph [ref=e24]: Drag items to add to your booking.
+      - generic [ref=e25]:
+        - paragraph [ref=e26]: Your baggage
+        - generic [ref=e27]:
+          - generic [ref=e28]: Carry-on (1 piece) – 7 kg
+          - button "Remove" [active] [ref=e29] [cursor=pointer]
+      - generic [ref=e30]:
+        - paragraph [ref=e31]: "Available options (drag to add):"
+        - generic [ref=e32]: Carry-on (1 piece) – 7 kg
+        - generic [ref=e33]: Checked bag (1 piece) – 23 kg
+        - generic [ref=e34]: Checked bag (2 pieces) – 23 kg each
+      - generic [ref=e35]:
+        - button "Back" [ref=e36] [cursor=pointer]
+        - button "Continue to review" [ref=e37] [cursor=pointer]
+```

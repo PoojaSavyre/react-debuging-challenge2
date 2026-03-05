@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useBooking } from '../context/BookingContext';
 import { PageHeader } from '../components/PageHeader';
@@ -14,6 +14,7 @@ export function BaggagePage() {
   const { baggageItems, setBaggageItems } = useBooking();
   const [draggedItem, setDraggedItem] = useState(null);
   const [selectedItems, setSelectedItems] = useState(baggageItems || []);
+  const currentItemRef = useRef(null);
 
   const handleDragStart = useCallback((e, item) => {
     setDraggedItem(item);
@@ -63,6 +64,7 @@ export function BaggagePage() {
       <p className="content-lead">Drag items to add to your booking.</p>
       <div
         className="drop-zone"
+        data-testid="baggage-drop-zone"
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
@@ -73,18 +75,21 @@ export function BaggagePage() {
             Drag baggage options here
           </p>
         ) : (
-          selectedItems.map((item) => (
-            <div
-              key={item.id}
-              className="draggable-baggage"
-              style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
-            >
-              <span>{item.label} – {item.weight}</span>
-              <button type="button" onClick={() => removeItem(item.id)} className="btn btn-secondary">
-                Remove
-              </button>
-            </div>
-          ))
+          selectedItems.map((item) => {
+            currentItemRef.current = item;
+            return (
+              <div
+                key={item.id}
+                className="draggable-baggage"
+                style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
+              >
+                <span>{item.label} – {item.weight}</span>
+                <button type="button" onClick={() => removeItem(currentItemRef.current.id)} className="btn btn-secondary">
+                  Remove
+                </button>
+              </div>
+            );
+          })
         )}
       </div>
       <div style={{ marginTop: '1rem' }}>
