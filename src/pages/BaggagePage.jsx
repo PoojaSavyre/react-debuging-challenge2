@@ -43,7 +43,7 @@ export function BaggagePage() {
       }
       setDraggedItem(null);
     },
-    [draggedItem, selectedItems]
+    []
   );
 
   const removeItem = useCallback((id) => {
@@ -63,6 +63,7 @@ export function BaggagePage() {
       <p className="content-lead">Drag items to add to your booking.</p>
       <div
         className="drop-zone"
+        data-testid="baggage-drop-zone"
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
@@ -73,26 +74,30 @@ export function BaggagePage() {
             Drag baggage options here
           </p>
         ) : (
-          selectedItems.map((item) => (
-            <div
-              key={item.id}
-              className="draggable-baggage"
-              style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
-            >
-              <span>{item.label} – {item.weight}</span>
-              <button type="button" onClick={() => removeItem(item.id)} className="btn btn-secondary">
-                Remove
-              </button>
-            </div>
-          ))
+          <div data-testid="baggage-selected-list">
+            {selectedItems.map((item) => (
+              <div
+                key={item.id}
+                className="draggable-baggage"
+                data-testid={`baggage-selected-${item.id}`}
+                style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
+              >
+                <span>{item.label} – {item.weight}</span>
+                <button type="button" onClick={() => removeItem(item.id)} className="btn btn-secondary">
+                  Remove
+                </button>
+              </div>
+            ))}
+          </div>
         )}
       </div>
-      <div style={{ marginTop: '1rem' }}>
+      <div style={{ marginTop: '1rem' }} data-testid="baggage-options">
         <p style={{ marginBottom: '0.5rem' }}>Available options (drag to add):</p>
         {BAGGAGE_OPTIONS.map((item) => (
           <div
             key={item.id}
             className="draggable-baggage"
+            data-testid={`baggage-option-${item.id}`}
             draggable
             onDragStart={(e) => handleDragStart(e, item)}
           >

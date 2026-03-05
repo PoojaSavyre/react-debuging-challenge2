@@ -1,0 +1,15 @@
+{
+  "description": "On the Baggage page, dragging a baggage option (e.g. Carry-on) into the 'Your baggage' drop zone does not add the item; the drop zone stays empty or shows 'Drag baggage options here'.",
+  "expectedOutcome": "After dragging an option into the drop zone, that option appears in the 'Your baggage' list and can be removed or the user can continue to review.",
+  "hint": "The drop handler is memoized with useCallback but its dependency array does not include the values it reads from the component.",
+  "symptom": "Dragging a baggage option into the drop zone does not add it to the list.",
+  "difficulty": "entry",
+  "competency": "React Hook Usage",
+  "bugFilePath": "src/pages/BaggagePage.jsx",
+  "solution": "Add draggedItem and selectedItems to the useCallback dependency array for handleDrop so the callback always sees current state instead of a stale closure.",
+  "solutionCode": "  const handleDrop = useCallback(\n    (e) => {\n      e.preventDefault();\n      e.currentTarget.classList.remove('drag-over');\n      if (!draggedItem) return;\n      const id = e.dataTransfer.getData('text/plain');\n      const item = BAGGAGE_OPTIONS.find((o) => o.id === id);\n      if (item && !selectedItems.some((s) => s.id === item.id)) {\n        setSelectedItems((prev) => [...prev, item]);\n      }\n      setDraggedItem(null);\n    },\n    [draggedItem, selectedItems]\n  );",
+  "playwrightTests": ["tests/baggage.spec.cjs"],
+  "playwrightTestSnippets": [
+    "test('baggage page: drag option to drop zone adds it to selected list', async ({ page }) => {\n  await page.goto('/baggage');\n  const dropZone = page.getByTestId('baggage-drop-zone');\n  await dropZone.scrollIntoViewIfNeeded();\n  const option = page.getByTestId('baggage-option-carry-1');\n  await option.scrollIntoViewIfNeeded();\n  await option.dragTo(dropZone, { timeout: 10000, force: true });\n  await expect(page.getByTestId('baggage-selected-carry-1')).toBeVisible({ timeout: 5000 });\n  await expect(page.getByTestId('baggage-selected-list')).toContainText('Carry-on');\n});"
+  ]
+}
