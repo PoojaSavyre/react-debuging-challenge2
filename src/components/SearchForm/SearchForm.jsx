@@ -10,6 +10,7 @@ export function SearchForm({ onSubmit }) {
   const { setSearchParams } = useBooking();
   const [formData, setFormData] = useState({
     origin: '',
+    to: '',
     destination: '',
     date: '',
     passengers: 1,
@@ -42,7 +43,10 @@ export function SearchForm({ onSubmit }) {
   const handleChange = (name, value) => {
     setFormData((prev) => {
       const next = { ...prev, [name]: value };
-      if (name === 'origin' && prev.destination === value) next.destination = '';
+      if (name === 'origin' && (prev.destination === value || prev.to === value)) {
+        next.destination = '';
+        next.to = '';
+      }
       return next;
     });
     if (errors[name]) setErrors((prev) => ({ ...prev, [name]: '' }));
@@ -64,7 +68,7 @@ export function SearchForm({ onSubmit }) {
   );
 
   return (
-    <form onSubmit={handleSubmit} className="card" role="search" aria-label="Flight search">
+    <form onSubmit={handleSubmit} className="card" role="search" aria-label="Flight search" noValidate>
       <SearchFormField
         label="From"
         name="origin"
@@ -78,8 +82,8 @@ export function SearchForm({ onSubmit }) {
       <SearchFormField
         label="To"
         name="destination"
-        value={formData.destination}
-        onChange={(e) => handleChange('destination', e.target.value)}
+        value={formData.to}
+        onChange={(e) => handleChange('to', e.target.value)}
         error={errors.destination}
         placeholder="Select destination"
         required

@@ -1,0 +1,31 @@
+{
+  "description": "On the flight search form, after the user selects 'From' and 'To' and a date, clicking 'Search Flights' always shows 'Destination is required' (or the search runs with no destination). The value selected in 'To' is not accepted: the form behaves as if the destination was never filled.",
+  "expectedOutcome": "When the user selects origin, destination, and date and clicks Search Flights, the form should submit and show search results for that route. The destination selection should be recognized by validation and sent to the search.",
+  "hint": "When one field's value appears to be ignored by validation or submit, check whether the form state shape is consistent: the same key should be used where the value is stored, where it is validated, and where it is sent.",
+  "difficulty": "Easy",
+  "bugFilePath": "src/components/SearchForm/SearchForm.jsx",
+  "solution": "The form state stored the destination in two places: the To field was wired to formData.to (value and handleChange('to', ...)), while validate() and setSearchParams() used formData.destination. So the value the user selected was saved in formData.to but never read by validation or submit, and formData.destination stayed empty. The fix is to use a single key for destination: wire the To field to formData.destination (value={formData.destination}, handleChange('destination', ...)) and remove the redundant 'to' from initial state and from handleChange.",
+  "solutionCode": "  const [formData, setFormData] = useState({\n    origin: '',\n    destination: '',\n    date: '',\n    passengers: 1,\n  });\n  // ... handleChange: if (name === 'origin' && prev.destination === value) next.destination = '';\n  // To field: value={formData.destination} onChange={(e) => handleChange('destination', e.target.value)}",
+  "playwrightTests": [
+    {
+      "name": "search form accepts destination and submits to results",
+      "description": "Fails when bug is present (destination ignored); passes when fixed.",
+      "flow": "Select From, To, Date, click Search Flights; assert URL is /search and results or flight count is shown (not validation error)."
+    },
+    {
+      "name": "validation shows error when destination is empty",
+      "description": "Regression: validation still works when destination not selected.",
+      "flow": "Select only From and Date, submit; assert destination required error or form does not navigate."
+    },
+    {
+      "name": "search results show route when origin and destination are selected",
+      "description": "Regression: results page shows correct route.",
+      "flow": "Submit valid search, assert page shows origin and destination in header or results."
+    }
+  ],
+  "playwrightTestSnippets": [
+    "await page.getByLabel('From').selectOption('DEL');\nawait page.getByLabel('To').selectOption('BOM');\nawait page.getByLabel('Date').fill('2025-12-01');\nawait page.getByRole('button', { name: 'Search Flights' }).click();\nawait expect(page).toHaveURL(/\\/search/);\nawait expect(page.getByText(/DEL|BOM|flight|found/i)).toBeVisible();",
+    "await page.getByLabel('From').selectOption('DEL');\nawait page.getByLabel('Date').fill('2025-12-01');\nawait page.getByRole('button', { name: 'Search Flights' }).click();\nawait expect(page.getByText(/destination|required/i)).toBeVisible();",
+    "await page.getByLabel('From').selectOption('DEL');\nawait page.getByLabel('To').selectOption('BOM');\nawait page.getByLabel('Date').fill('2025-12-01');\nawait page.getByRole('button', { name: 'Search Flights' }).click();\nawait expect(page.getByText(/DEL|BOM/)).toBeVisible();"
+  ]
+}
