@@ -1,0 +1,20 @@
+{
+  "description": "After adding baggage on the Baggage page and clicking 'Continue to review', the Review page does not show the Baggage section. The selected baggage never appears in the booking summary even though the user added items.",
+  "expectedOutcome": "When the user adds baggage options and continues to the Review page, the Review page should display the Baggage section with the items they added. The booking context state should update so that baggageItems is reflected on Review.",
+  "hint": "When state does not update after a dispatch, check whether the reducer returns a new object. React compares state by reference; if the reducer returns the same object reference (e.g. after mutating it), components will not re-render.",
+  "difficulty": "Easy",
+  "competency": "React Hook Usage",
+  "bugFilePath": "src/context/BookingContext.jsx",
+  "solution": "The SET_BAGGAGE case in bookingReducer mutated state (state.baggageItems = action.payload) and returned state. Returning the same reference means React does not detect a change, so subscribers do not re-render. The fix is to return a new state object: return { ...state, baggageItems: action.payload };",
+  "solutionCode": "case 'SET_BAGGAGE':\n  return { ...state, baggageItems: action.payload };",
+  "playwrightTests": [
+    {
+      "name": "baggage added on Baggage page appears on Review page",
+      "description": "Fails when bug is present (review does not show baggage); passes when fixed.",
+      "flow": "Search, select flight, fill passengers, select seat, add baggage (e.g. Carry-on), continue to review; assert Review page shows 'Baggage' heading and the added item."
+    }
+  ],
+  "playwrightTestSnippets": [
+    "Full flow to /review with baggage; then:\nawait expect(page.getByRole('heading', { name: 'Baggage' })).toBeVisible();\nawait expect(page.getByText('Carry-on (1 piece)')).toBeVisible();"
+  ]
+}

@@ -1,0 +1,48 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e2]:
+  - navigation [ref=e3]:
+    - generic [ref=e4]:
+      - generic [ref=e5]:
+        - link "SkyBook" [ref=e6] [cursor=pointer]:
+          - /url: /
+        - link "Search" [ref=e7] [cursor=pointer]:
+          - /url: /search
+        - link "About" [ref=e8] [cursor=pointer]:
+          - /url: /about
+        - link "Contact" [ref=e9] [cursor=pointer]:
+          - /url: /contact
+        - link "Help" [ref=e10] [cursor=pointer]:
+          - /url: /help
+        - link "Destinations" [ref=e11] [cursor=pointer]:
+          - /url: /destinations
+        - link "Offers" [ref=e12] [cursor=pointer]:
+          - /url: /offers
+        - link "My Bookings" [ref=e13] [cursor=pointer]:
+          - /url: /my-bookings
+      - generic [ref=e14]:
+        - generic [ref=e15]: Test
+        - button "Logout" [ref=e16] [cursor=pointer]
+  - main [ref=e17]:
+    - generic [ref=e19]:
+      - heading "Review your booking" [level=1] [ref=e20]
+      - paragraph [ref=e21]: SkyWings SW101 · DEL → BOM
+    - generic [ref=e23]:
+      - generic [ref=e24]:
+        - heading "Flight" [level=3] [ref=e25]
+        - paragraph [ref=e26]: SkyWings SW101
+        - paragraph [ref=e27]: DEL → BOM
+        - paragraph [ref=e28]: 3/15/2025, 8:00:00 AM – 3/15/2025, 10:15:00 AM
+        - paragraph [ref=e29]:
+          - strong [ref=e30]: ₹4,500
+      - generic [ref=e31]:
+        - heading "Passengers" [level=3] [ref=e32]
+        - paragraph [ref=e33]: Test User · test@example.com · Seat A1
+      - generic [ref=e34]:
+        - paragraph [ref=e35]:
+          - text: "Total:"
+          - strong [ref=e36]: ₹4,500
+        - button "Confirm booking" [ref=e37] [cursor=pointer]
+      - button "Back" [ref=e38] [cursor=pointer]
+```

@@ -25,7 +25,8 @@ function bookingReducer(state, action) {
         selectedSeats: { ...state.selectedSeats, [action.payload.passengerId]: action.payload.seatId },
       };
     case 'SET_BAGGAGE':
-      return { ...state, baggageItems: action.payload };
+      state.baggageItems = action.payload;
+      return state;
     case 'SET_BOOKING_ID':
       return { ...state, bookingId: action.payload };
     case 'RESET_BOOKING':
