@@ -29,7 +29,7 @@ export function Layout({ children }) {
         <div className="nav-inner">
           <div>
             <Link to="/" className="nav-logo">SkyBook</Link>
-            <Link to="/search">Search</Link>
+            <Link to="/search" data-testid="nav-search">Search</Link>
             <Link to="/about">About</Link>
             <Link to="/contact">Contact</Link>
             <Link to="/help">Help</Link>
@@ -38,7 +38,7 @@ export function Layout({ children }) {
             <Link to="/my-bookings">My Bookings</Link>
           </div>
           <div className="nav-right">
-            {isAuthenticated ? (
+            {!isAuthenticated ? (
               <>
                 <span className="user-name">{user?.name || user?.email}</span>
                 <button type="button" className="btn btn-secondary" onClick={logout}>

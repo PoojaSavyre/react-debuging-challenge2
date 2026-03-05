@@ -1,0 +1,15 @@
+{
+  "description": "After logging in, the nav still shows the 'Log in' button instead of the user's name and 'Logout'. When logged out, it incorrectly shows the user name and Logout. The auth state and the nav UI are reversed.",
+  "expectedOutcome": "When the user is logged in, the nav should show their name and a Logout button. When logged out, it should show a Log in button.",
+  "hint": "The condition that decides what to show in the nav (user + Logout vs Log in) must match the actual auth state.",
+  "symptom": "After logging in, the nav still shows 'Log in'; when not logged in, it shows user name and Logout.",
+  "difficulty": "entry",
+  "competency": "React Component Architecture",
+  "bugFilePath": "src/components/Layout.jsx",
+  "solution": "Use isAuthenticated (not its negation) to show the logged-in block (user name + Logout) and the logged-out block (Log in).",
+  "solutionCode": "{isAuthenticated ? (\n              <>\n                <span className=\"user-name\">{user?.name || user?.email}</span>\n                <button type=\"button\" className=\"btn btn-secondary\" onClick={logout}>\n                  Logout\n                </button>\n              </>\n            ) : (\n              <button type=\"button\" className=\"btn btn-primary nav-login-btn\" onClick={() => setShowLoginModal(true)}>\n                Log in\n              </button>\n            )}",
+  "playwrightTests": ["tests/component-unmount-memory-leak.spec.js"],
+  "playwrightTestSnippets": [
+    "Stub api/auth/me to return 200 with { user: { name: 'Test User', email: 'test@example.com' } }; goto /; expect nav to show Logout button and user name, and not show Log in button."
+  ]
+}

@@ -38,6 +38,9 @@ export function LoginModal({ onClose, onLoginSuccess }) {
           {loginError && (
             <p className="form-error" style={{ marginBottom: '0.5rem' }}>{loginError}</p>
           )}
+          <p className="login-hint" style={{ marginBottom: '0.75rem', fontSize: '0.9rem', color: 'var(--text-muted, #64748b)' }}>
+            Use john as name and john@gmail.com as email.
+          </p>
           <div className="form-group">
             <label htmlFor="modal-login-name">Name</label>
             <input

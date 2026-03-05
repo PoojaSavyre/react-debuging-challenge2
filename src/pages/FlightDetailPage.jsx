@@ -43,7 +43,7 @@ export function FlightDetailPage() {
       <>
         <PageHeader title="Flight details" subtitle="Loading..." />
         <div className="container">
-          <div className="content-section" style={{ textAlign: 'center', padding: '3rem' }}>
+          <div className="content-section" style={{ textAlign: 'center', padding: '3rem' }} data-testid="flight-detail-loading">
             <p className="content-lead">Loading flight...</p>
           </div>
         </div>
@@ -58,7 +58,7 @@ export function FlightDetailPage() {
         <div className="container">
           <div className="content-section">
             <p className="content-lead">{error || 'Flight not found.'}</p>
-            <button type="button" className="btn btn-secondary" onClick={() => navigate('/search')}>
+            <button type="button" className="btn btn-secondary" data-testid="flight-detail-back" onClick={() => navigate('/search')}>
               Back to results
             </button>
           </div>
@@ -91,10 +91,10 @@ export function FlightDetailPage() {
           <p>Arrival: {arr.toLocaleString()}</p>
           <p>Duration: {hours}h {mins}m · {flight.seatsAvailable} seats available</p>
           <div style={{ marginTop: '1.5rem', display: 'flex', gap: '0.75rem' }}>
-            <button type="button" className="btn btn-primary" onClick={handleSelect}>
+            <button type="button" className="btn btn-primary" data-testid="flight-detail-continue" onClick={handleSelect}>
               Continue to passenger details
             </button>
-            <button type="button" className="btn btn-secondary" onClick={() => navigate('/search')}>
+            <button type="button" className="btn btn-secondary" data-testid="flight-detail-back" onClick={() => navigate('/search')}>
               Back to results
             </button>
           </div>
