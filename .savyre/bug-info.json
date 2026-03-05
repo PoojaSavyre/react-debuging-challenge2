@@ -1,0 +1,31 @@
+{
+  "description": "On the search results page, when the user clicks 'Select' on any flight card, they are always taken to the same flight's detail page (the last one in the list). Clicking the first flight or the second flight opens the same detail page. The user cannot open the detail for the flight they actually clicked.",
+  "expectedOutcome": "Clicking 'Select' on a flight card should navigate to that specific flight's detail page. Selecting the first flight shows the first flight's details; selecting the second shows the second's, and so on.",
+  "hint": "When every item in a list does the same action (e.g. always opens the same thing), consider how the callback passed to each item is created and what value it closes over.",
+  "difficulty": "Easy",
+  "bugFilePath": "src/pages/SearchResultsPage.jsx",
+  "solution": "The onSelect callback passed to each FlightCard was defined as () => lastFlight && navigate(`/flight/${lastFlight.id}`), closing over lastFlight. So every card received a callback that navigates to lastFlight.id regardless of which card was clicked. The fix is to pass a callback that uses the clicked flight's id: either onSelect={(id) => navigate(`/flight/${id}`)} (using the id argument FlightCard passes) or onSelect={() => navigate(`/flight/${flight.id}`)} inside the map so each iteration closes over that iteration's flight.",
+  "solutionCode": "        ) : (\n          sortedFlights.map((flight) => (\n            <FlightCard\n              key={flight.id}\n              flight={flight}\n              onSelect={(id) => navigate(`/flight/${id}`)}\n            />\n          ))\n        )",
+  "playwrightTests": [
+    {
+      "name": "clicking Select on first flight navigates to that flight detail",
+      "description": "Fails when bug is present (all Select go to last flight); passes when fixed.",
+      "flow": "Search for flights, click Select on the first card, capture URL; go back; click Select on the second card; assert the two URLs are different (different flight ids)."
+    },
+    {
+      "name": "search returns results and user can navigate to a flight detail",
+      "description": "Regression: navigation to detail works.",
+      "flow": "Search, click any Select, assert URL matches /flight/ and detail page loads."
+    },
+    {
+      "name": "results show flight cards after search",
+      "description": "Regression: list renders.",
+      "flow": "Search for a route, assert flight cards are visible."
+    }
+  ],
+  "playwrightTestSnippets": [
+    "await page.getByRole('button', { name: 'Select' }).first().click();\nconst firstUrl = page.url();\nawait page.goBack();\nawait page.getByRole('button', { name: 'Select' }).nth(1).click();\nawait expect(page).not.toHaveURL(firstUrl);",
+    "await page.getByRole('button', { name: 'Select' }).first().click();\nawait expect(page).toHaveURL(/\\/flight\\//);",
+    "await expect(page.getByTestId('flight-card').first()).toBeVisible();"
+  ]
+}

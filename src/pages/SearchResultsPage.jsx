@@ -1,4 +1,5 @@
 import React, { useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useBooking } from '../context/BookingContext';
 import { useFlightsSearch } from '../hooks/useFlightsSearch';
 import { FlightCard } from '../components/FlightCard';
@@ -6,8 +7,10 @@ import { SearchForm } from '../components/SearchForm';
 import { PageHeader } from '../components/PageHeader';
 
 export function SearchResultsPage() {
+  const navigate = useNavigate();
   const { searchParams } = useBooking();
   const { loading, sortBy, setSortBy, sortedFlights } = useFlightsSearch(searchParams);
+  const lastFlight = sortedFlights?.length ? sortedFlights[sortedFlights.length - 1] : null;
 
   const handleSortChange = useCallback(
     (e) => {
@@ -78,7 +81,13 @@ export function SearchResultsPage() {
             </p>
           </div>
         ) : (
-          sortedFlights.map((flight) => <FlightCard key={flight.id} flight={flight} />)
+          sortedFlights.map((flight) => (
+            <FlightCard
+              key={flight.id}
+              flight={flight}
+              onSelect={() => lastFlight && navigate(`/flight/${lastFlight.id}`)}
+            />
+          ))
         )}
       </div>
     </>

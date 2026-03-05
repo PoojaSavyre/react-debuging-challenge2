@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-function FlightCardComponent({ flight }) {
+function FlightCardComponent({ flight, onSelect }) {
   const dep = new Date(flight.departure);
   const arr = new Date(flight.arrival);
   const durationMins = flight.duration;
@@ -26,15 +26,22 @@ function FlightCardComponent({ flight }) {
           <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>{hours}h {mins}m</div>
         </div>
         <div className="flight-card-price">₹{flight.price.toLocaleString()}</div>
-        <Link to={`/flight/${flight.id}`} className="btn btn-primary">
-          Select
-        </Link>
+        {onSelect ? (
+          <button type="button" className="btn btn-primary" onClick={() => onSelect(flight.id)}>
+            Select
+          </button>
+        ) : (
+          <Link to={`/flight/${flight.id}`} className="btn btn-primary">
+            Select
+          </Link>
+        )}
       </div>
     </div>
   );
 }
 
 FlightCardComponent.propTypes = {
+  onSelect: PropTypes.func,
   flight: PropTypes.shape({
     id: PropTypes.string,
     airline: PropTypes.string,
