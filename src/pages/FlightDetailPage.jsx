@@ -4,6 +4,30 @@ import { useBooking } from '../context/BookingContext';
 import { apiRequest } from '../api/client';
 import { PageHeader } from '../components/PageHeader';
 
+function ActionBar({ children }) {
+  return (
+    <div style={{ marginTop: '1.5rem', display: 'flex', gap: '0.75rem' }}>
+      {children}
+    </div>
+  );
+}
+
+function PrimaryActionButton({ onPress, children, ...props }) {
+  return (
+    <button type="button" className="btn btn-primary" {...props} onClick={onPress}>
+      {children}
+    </button>
+  );
+}
+
+function SecondaryActionButton({ children, ...props }) {
+  return (
+    <button type="button" className="btn btn-secondary" {...props}>
+      {children}
+    </button>
+  );
+}
+
 export function FlightDetailPage() {
   const { flightId } = useParams();
   const navigate = useNavigate();
@@ -90,14 +114,14 @@ export function FlightDetailPage() {
           <p>Departure: {dep.toLocaleString()}</p>
           <p>Arrival: {arr.toLocaleString()}</p>
           <p>Duration: {hours}h {mins}m · {flight.seatsAvailable} seats available</p>
-          <div style={{ marginTop: '1.5rem', display: 'flex', gap: '0.75rem' }}>
-            <button type="button" className="btn btn-primary" onClick={handleSelect}>
+          <ActionBar>
+            <PrimaryActionButton data-testid="continue-to-passengers" onClick={handleSelect}>
               Continue to passenger details
-            </button>
-            <button type="button" className="btn btn-secondary" onClick={() => navigate('/search')}>
+            </PrimaryActionButton>
+            <SecondaryActionButton data-testid="back-to-results" onClick={() => navigate('/search')}>
               Back to results
-            </button>
-          </div>
+            </SecondaryActionButton>
+          </ActionBar>
         </div>
       </div>
     </>

@@ -1,0 +1,20 @@
+{
+  "description": "On the Flight Details page, clicking \"Continue to passenger details\" appears to do nothing, leaving the user stuck on the details step.",
+  "expectedOutcome": "Clicking \"Continue to passenger details\" should select the flight and navigate to the Passenger Details step at /passengers.",
+  "hint": "Look at the composed action button component in FlightDetailPage and verify the click handler prop name is being forwarded correctly.",
+  "symptom": "Continue to passenger details button is visible but does not navigate to /passengers when clicked.",
+  "difficulty": "mid",
+  "competency": "React Component Composition",
+  "bugFilePath": "src/pages/FlightDetailPage.jsx",
+  "exactBuggyCode": "function PrimaryActionButton({ onPress, children, ...props }) {\n  return (\n    <button type=\"button\" className=\"btn btn-primary\" {...props} onClick={onPress}>\n      {children}\n    </button>\n  );\n}\n// Call site: <PrimaryActionButton data-testid=\"continue-to-passengers\" onClick={handleSelect}>",
+  "exactCorrectFix": "Either (1) use onPress at call site: <PrimaryActionButton data-testid=\"continue-to-passengers\" onPress={handleSelect}> or (2) make the component accept onClick: function PrimaryActionButton({ onClick, children, ...props }) { return <button type=\"button\" className=\"btn btn-primary\" {...props} onClick={onClick}>{children}</button>; }",
+  "solution": "Fix the overly-nested button composition so the primary CTA forwards the click handler. The simplest fix is to make PrimaryActionButton accept an onClick prop and pass it to the underlying <button> (or update the call site to use the expected prop name onPress).",
+  "solutionCode": "function PrimaryActionButton({ onClick, children, ...props }) {\n  return (\n    <button type=\"button\" className=\"btn btn-primary\" {...props} onClick={onClick}>\n      {children}\n    </button>\n  );\n}",
+  "playwrightTests": [
+    "tests/booking-flow.spec.js"
+  ],
+  "playwrightTestSnippets": [
+    "await page.getByTestId('continue-to-passengers').click();\nawait expect(page).toHaveURL(/\\/passengers$/);"
+  ]
+}
+
