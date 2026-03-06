@@ -37,8 +37,9 @@ const MyBookingsPage = lazy(() =>
 );
 
 function PrivateRoute({ children }) {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, authLoading } = useAuth();
   const location = useLocation();
+  if (authLoading) return null;
   if (!isAuthenticated) {
     return <Navigate to="/" state={{ redirectTo: location.pathname }} replace />;
   }

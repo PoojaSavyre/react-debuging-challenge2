@@ -18,7 +18,7 @@ export function SearchResultsPage() {
 
   if (!searchParams?.origin || !searchParams?.destination) {
     return (
-      <>
+      <div data-testid="search-results-page">
         <PageHeader
           title="Search flights"
           subtitle="Enter your trip details to find and compare flights."
@@ -28,13 +28,13 @@ export function SearchResultsPage() {
             <SearchForm />
           </div>
         </div>
-      </>
+      </div>
     );
   }
 
   if (loading && !sortedFlights?.length) {
     return (
-      <>
+      <div data-testid="search-results-page">
         <PageHeader
           title="Searching..."
           subtitle={`Flights from ${searchParams.origin} to ${searchParams.destination}`}
@@ -44,12 +44,12 @@ export function SearchResultsPage() {
             <p className="content-lead">Loading flights...</p>
           </div>
         </div>
-      </>
+      </div>
     );
   }
 
   return (
-    <>
+    <div data-testid="search-results-page">
       <PageHeader
         title={`${searchParams.origin} → ${searchParams.destination}`}
         subtitle={
@@ -81,6 +81,6 @@ export function SearchResultsPage() {
           sortedFlights.map((flight) => <FlightCard key={flight.id} flight={flight} />)
         )}
       </div>
-    </>
+    </div>
   );
 }

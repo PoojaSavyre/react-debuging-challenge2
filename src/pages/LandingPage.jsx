@@ -4,7 +4,7 @@ import { SearchForm } from '../components/SearchForm';
 
 export function LandingPage() {
   return (
-    <div className="landing">
+    <div className="landing" data-testid="landing-page">
       <section className="hero">
         <div className="hero-bg" aria-hidden="true" />
         <div className="hero-content">
