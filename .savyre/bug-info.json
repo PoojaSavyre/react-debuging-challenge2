@@ -1,0 +1,17 @@
+{
+  "description": "The passenger details form allows submission when the phone number is left empty. The user can click 'Continue to seat selection' with only name and email filled; the form proceeds to the next step without showing a validation error for the missing phone.",
+  "expectedOutcome": "Phone is required for contact. Submitting the form with an empty phone field should show a 'Phone is required' validation error and keep the user on the passenger details page; navigation to seat selection should not occur.",
+  "hint": "The passenger form should require phone for contact; check which field has no validation rules.",
+  "symptom": "Form submits and navigates to seat selection even when phone is left empty.",
+  "difficulty": "entry",
+  "competency": "React Form Management",
+  "bugFilePath": "src/pages/PassengerFormPage.jsx",
+  "solution": "Add required validation to the phone field in PassengerFields and display its validation error (label 'Phone *', register with { required: 'Phone is required' }, and render the error span with role='alert' and aria-invalid on the input).",
+  "exactBuggyCode": "<label htmlFor={`passengers.${i}.phone`}>Phone</label>\n<input id={`passengers.${i}.phone`} type=\"tel\" {...register(`passengers.${i}.phone`)} />",
+  "exactCorrectFix": "Label: Phone *; register: {...register(`passengers.${i}.phone`, { required: 'Phone is required' })}; add aria-invalid on input; add error span: {errors?.passengers?.[i]?.phone && (<span className=\"form-error\" role=\"alert\">{errors.passengers[i].phone.message}</span>)}",
+  "solutionCode": "In PassengerFields: (1) Change the phone label to 'Phone *'. (2) Replace {...register(`passengers.${i}.phone`)} with {...register(`passengers.${i}.phone`, { required: 'Phone is required' })} and set aria-invalid={errors?.passengers?.[i]?.phone ? 'true' : 'false'} on the input. (3) After the phone input, add the error display: {errors?.passengers?.[i]?.phone && (<span className=\"form-error\" role=\"alert\">{errors.passengers[i].phone.message}</span>)}",
+  "playwrightTests": ["tests/passenger-form.spec.js"],
+  "playwrightTestSnippets": [
+    "test('submitting passenger form with empty phone shows validation error and stays on passengers page', async ({ page }) => { ... fill name and email, leave phone empty, submit ... await expect(page).toHaveURL(/\\/passengers/); await expect(page.getByRole('alert').filter({ hasText: /phone is required/i })).toBeVisible(); });"
+  ]
+}

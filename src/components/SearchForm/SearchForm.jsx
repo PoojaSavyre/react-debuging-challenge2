@@ -64,7 +64,7 @@ export function SearchForm({ onSubmit }) {
   );
 
   return (
-    <form onSubmit={handleSubmit} className="card" role="search" aria-label="Flight search">
+    <form onSubmit={handleSubmit} className="card" role="search" aria-label="Flight search" data-testid="search-form" noValidate>
       <SearchFormField
         label="From"
         name="origin"

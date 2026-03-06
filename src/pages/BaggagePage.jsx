@@ -63,6 +63,7 @@ export function BaggagePage() {
       <p className="content-lead">Drag items to add to your booking.</p>
       <div
         className="drop-zone"
+        data-testid="baggage-drop-zone"
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}

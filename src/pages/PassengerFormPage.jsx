@@ -45,7 +45,7 @@ function PassengerFields({ passengerCount, register, errors }) {
             )}
           </div>
           <div className="form-group">
-            <label htmlFor={`passengers.${i}.phone`}>Phone</label>
+            <label htmlFor={`passengers.${i}.phone`}>Phone *</label>
             <input
               id={`passengers.${i}.phone`}
               type="tel"
@@ -89,7 +89,7 @@ export function PassengerFormPage() {
 
   useEffect(() => {
     if (!selectedFlight) {
-      navigate('/search', { replace: true });
+        navigate('/search', { replace: true });
     }
   }, [selectedFlight, navigate]);
 
@@ -118,7 +118,7 @@ export function PassengerFormPage() {
       />
       <div className="container">
         <FormProvider {...methods}>
-          <form onSubmit={handleSubmit(onSubmit)} className="content-section">
+          <form onSubmit={handleSubmit(onSubmit)} className="content-section" data-testid="passenger-form">
             <PassengerFields
               passengerCount={passengerCount}
               register={register}
