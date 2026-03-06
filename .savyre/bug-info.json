@@ -1,0 +1,15 @@
+{
+  "description": "Submitting the passenger details form with empty or invalid required fields (name, email) still navigates to the seat selection page instead of showing validation errors. The user can proceed without filling mandatory passenger information.",
+  "expectedOutcome": "Required fields (full name, email) must be validated before submission. When the user clicks \"Continue to seat selection\" with missing or invalid data, they should remain on the passenger form and see inline validation messages (e.g. \"Name is required\", \"Email is required\" or \"Enter a valid email\"). Only valid data should trigger navigation to /seats.",
+  "hint": "Ensure the form only proceeds when react-hook-form validation passes.",
+  "symptom": "Submitting the passenger form with missing required fields still navigates to seat selection.",
+  "difficulty": "mid",
+  "competency": "React Hook Form Usage",
+  "bugFilePath": "src/pages/PassengerFormPage.jsx",
+  "solution": "The form's submit handler bypasses react-hook-form validation by calling the success callback with getValues() on every submit. Use handleSubmit(onSubmit) so that react-hook-form runs validation and only invokes onSubmit when the form is valid.",
+  "solutionCode": "Replace the form's onSubmit from:\n  onSubmit={(e) => { e.preventDefault(); onSubmit(getValues()); }}\nto:\n  onSubmit={handleSubmit(onSubmit)}\nand remove getValues from the useForm destructuring if it is no longer used.",
+  "playwrightTests": ["tests/passenger-form-validation.spec.js"],
+  "playwrightTestSnippets": [
+    "Stub api/auth/me (authenticated user), api/flights, api/flights/fl-1. Go to /, search DEL->BOM, click Select on first flight, click Continue to passenger details. On /passengers click passenger-form-submit without filling name/email. Assert: toHaveURL(/\\/passengers\\//), passenger-form-page visible, and validation alert or text (name is required|email is required|enter a valid email) visible."
+  ]
+}

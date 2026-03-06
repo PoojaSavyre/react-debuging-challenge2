@@ -83,6 +83,7 @@ export function PassengerFormPage() {
   const {
     register,
     handleSubmit,
+    getValues,
     formState: { errors },
     reset,
   } = methods;
@@ -116,15 +117,15 @@ export function PassengerFormPage() {
         title="Passenger details"
         subtitle={`${passengerCount} passenger(s) · ${selectedFlight?.airline} ${selectedFlight?.flightNumber}`}
       />
-      <div className="container">
+      <div className="container" data-testid="passenger-form-page">
         <FormProvider {...methods}>
-          <form onSubmit={handleSubmit(onSubmit)} className="content-section">
+          <form onSubmit={(e) => { e.preventDefault(); onSubmit(getValues()); }} className="content-section" data-testid="passenger-form">
             <PassengerFields
               passengerCount={passengerCount}
               register={register}
               errors={errors}
             />
-            <button type="submit" className="btn btn-primary">
+            <button type="submit" className="btn btn-primary" data-testid="passenger-form-submit">
               Continue to seat selection
             </button>
             <button

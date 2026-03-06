@@ -58,7 +58,7 @@ export function SearchResultsPage() {
             : 'No flights on this route'
         }
       />
-      <div className="container">
+      <div className="container" data-testid="search-results-page">
         {sortedFlights.length > 0 && (
           <div className="results-header">
             <h2 className="results-title">Choose a flight</h2>

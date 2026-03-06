@@ -5,11 +5,14 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "dev:e2e": "vite --host 127.0.0.1",
     "build": "vite build",
     "preview": "vite preview",
     "server": "cd server && node index.js",
     "test": "vitest",
-    "test:run": "vitest run"
+    "test:run": "vitest run",
+    "e2e": "cd e2e && npm run e2e",
+    "e2e:install": "cd e2e && npm install && npx playwright install"
   },
   "dependencies": {
     "prop-types": "^15.8.1",
@@ -27,6 +30,6 @@
     "@vitejs/plugin-react": "^4.2.1",
     "jsdom": "^23.0.1",
     "vite": "^5.0.8",
-    "vitest": "^1.1.0"
+    "vitest": "^1.4.0"
   }
 }
