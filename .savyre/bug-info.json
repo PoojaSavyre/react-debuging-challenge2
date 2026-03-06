@@ -1,7 +1,7 @@
 {
-  "description": "When a user clicks \"Select\" on a flight in the search results, nothing happens—they do not go to the flight detail page. The app uses an AppLink component that wraps React Router's Link; the parent (FlightCard) passes to, className, and other props, but AppLink only uses children and never forwards the rest to the underlying Link, so the link has no destination.",
-  "expectedOutcome": "Clicking \"Select\" on a flight card should navigate to the flight detail page (e.g. /flight/FL-101). The AppLink component must forward all props (to, className, data-testid, etc.) to the inner Link so navigation and styling work.",
-  "hint": "AppLink receives to and other props from the parent but only passes children to Link.",
+  "description": "When a user clicks \"Select\" on a flight in the search results, nothing happens—they stay on the same page and do not reach the flight detail page.",
+  "expectedOutcome": "Clicking \"Select\" on a flight should take the user to that flight's detail page.",
+  "hint": "A wrapper component receives props that control where the link goes but does not pass them to the element that performs navigation.",
   "symptom": "Clicking \"Select\" on a flight does not navigate; user stays on the search results page.",
   "difficulty": "entry",
   "competency": "Component Architecture",
