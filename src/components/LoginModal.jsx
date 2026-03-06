@@ -34,6 +34,7 @@ export function LoginModal({ onClose, onLoginSuccess }) {
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
         <h2 id="login-modal-title" className="login-title">Log in</h2>
         <p className="login-desc">Sign in to complete booking (passengers, seats, review).</p>
+        <p className="login-hint">Hint: use john/john@gmail.com</p>
         <form onSubmit={handleSubmit} className="login-form">
           {loginError && (
             <p className="form-error" style={{ marginBottom: '0.5rem' }}>{loginError}</p>
@@ -43,6 +44,7 @@ export function LoginModal({ onClose, onLoginSuccess }) {
             <input
               id="modal-login-name"
               type="text"
+              placeholder="e.g. john"
               value={loginName}
               onChange={(e) => setLoginName(e.target.value)}
               required
@@ -53,6 +55,7 @@ export function LoginModal({ onClose, onLoginSuccess }) {
             <input
               id="modal-login-email"
               type="email"
+              placeholder="e.g. john@gmail.com"
               value={loginEmail}
               onChange={(e) => setLoginEmail(e.target.value)}
               required
