@@ -23,7 +23,7 @@ export class ErrorBoundary extends React.Component {
         return this.props.fallback;
       }
       return (
-        <div className="card" style={{ margin: '2rem' }}>
+        <div className="card" style={{ margin: '2rem' }} data-testid="error-boundary-fallback">
           <h2>Something went wrong</h2>
           <p>{this.state.error?.message}</p>
           <button

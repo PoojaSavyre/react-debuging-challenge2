@@ -1,0 +1,13 @@
+{
+  "description": "Flight detail page shows the full-page error boundary and the user cannot continue booking.",
+  "expectedOutcome": "User can view flight details and proceed (e.g. continue to passenger details) even when something fails on the page.",
+  "hint": "Handle the promise rejection (e.g. .catch) and either set a fallback for extras or guard the Add-ons section so it never reads undefined.",
+  "symptom": "Full-page error boundary on flight detail; user cannot proceed.",
+  "difficulty": "mid",
+  "competency": "Error Boundary Implementation",
+  "bugFilePath": "src/pages/FlightDetailPage.jsx",
+  "solution": "Catch the extras promise rejection in the effect (e.g. .catch) and either set flight.extras to [] on error so the Add-ons section has a safe value, or set extrasError state and in render only show the Add-ons list when flight.extras is defined (e.g. Array.isArray(flight.extras)), otherwise show 'Add-ons unavailable'.",
+  "solutionCode": "In the extras useEffect, add .catch(() => setFlight((prev) => (prev ? { ...prev, extras: [] } : prev))); so extras is always an array. Or: add state setExtrasError, .catch(setExtrasError), and in render use: {Array.isArray(flight.extras) ? flight.extras.map((opt) => opt.name).join(', ') || 'None' : 'Add-ons unavailable'}",
+  "playwrightTests": ["e2e/tests/error-boundary-promise-rejection.spec.cjs"],
+  "playwrightTestSnippets": ["test('when flight extras API rejects, error boundary shows fallback', async ({ page }) => { ... });"]
+}

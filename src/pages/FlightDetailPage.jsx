@@ -33,6 +33,17 @@ export function FlightDetailPage() {
     };
   }, [flightId]);
 
+  // Load flight add-ons (baggage, meals). If this promise rejects and we don't catch it,
+  // flight.extras stays undefined and the Add-ons section will throw during render.
+  useEffect(() => {
+    if (!flightId) return;
+    apiRequest(`api/flights/${encodeURIComponent(flightId)}/extras`).then((data) => {
+      if (data && data.options) {
+        setFlight((prev) => (prev ? { ...prev, extras: data.options } : prev));
+      }
+    });
+  }, [flightId]);
+
   const handleSelect = () => {
     setSelectedFlight(flight);
     navigate('/passengers');
@@ -90,6 +101,10 @@ export function FlightDetailPage() {
           <p>Departure: {dep.toLocaleString()}</p>
           <p>Arrival: {arr.toLocaleString()}</p>
           <p>Duration: {hours}h {mins}m · {flight.seatsAvailable} seats available</p>
+          <div className="flight-extras" style={{ marginTop: '1rem' }}>
+            <strong>Add-ons:</strong>{' '}
+            {flight.extras.map((opt) => opt.name).join(', ') || 'None'}
+          </div>
           <div style={{ marginTop: '1.5rem', display: 'flex', gap: '0.75rem' }}>
             <button type="button" className="btn btn-primary" onClick={handleSelect}>
               Continue to passenger details

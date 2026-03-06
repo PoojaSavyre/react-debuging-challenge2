@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 export function PageFallback({ message = 'Something went wrong', onRetry }) {
   return (
-    <div className="container">
+    <div className="container" data-testid="error-boundary-fallback">
       <div className="content-section card" style={{ margin: '2rem auto', maxWidth: '480px' }}>
         <h2>Something went wrong</h2>
         <p>{message}</p>
