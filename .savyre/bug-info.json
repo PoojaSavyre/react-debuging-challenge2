@@ -1,0 +1,20 @@
+{
+  "description": "When the user clicks 'Log in' in the nav, the login modal opens but the form (name, email fields and Log in button) is not visible, so the user cannot sign in.",
+  "expectedOutcome": "The login modal should display the full form: name and email inputs and a Log in button. After submitting valid credentials, the user should be logged in (e.g. see their name and a Logout button).",
+  "hint": "Check whether every wrapper component actually renders its children.",
+  "symptom": "Login modal opens but the form is not visible.",
+  "difficulty": "entry",
+  "competency": "React Component Reusability",
+  "bugFilePath": "src/components/LoginModal.jsx",
+  "solution": "ModalFormSection is a wrapper component that returns a div but never renders its children. Either fix it to render children (return <div className=\"modal-form-section\">{children}</div>) or remove the wrapper and render the form directly inside modal-content to reduce unnecessary nesting.",
+  "solutionCode": "function ModalFormSection({ children }) {\n  return <div className=\"modal-form-section\">{children}</div>;\n}",
+  "buggyCode": "function ModalFormSection({ children }) {\n  return <div className=\"modal-form-section\" />;\n}",
+  "playwrightTests": ["tests/login-flow.spec.js"],
+  "playwrightTestSnippets": [
+    "await page.getByTestId('nav-login-btn').click();",
+    "await expect(page.getByTestId('login-form')).toBeVisible();",
+    "await expect(page.getByTestId('login-submit-btn')).toBeVisible();",
+    "await page.getByTestId('login-submit-btn').click();",
+    "await expect(page.getByRole('button', { name: /logout/i })).toBeVisible({ timeout: 5000 });"
+  ]
+}

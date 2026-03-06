@@ -96,6 +96,7 @@ textarea {
 
 .btn-primary:hover {
   background: var(--primary-dark);
+  color: white;
 }
 
 .btn-lg {
