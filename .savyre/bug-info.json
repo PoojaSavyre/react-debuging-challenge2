@@ -1,0 +1,16 @@
+{
+  "description": "On the flight details page, the flight data is refetched on every render. Users see loading flicker, repeated network requests for the same flight, and the page may feel sluggish or unstable.",
+  "expectedOutcome": "Flight details are fetched once when the page loads (or when the flight ID in the URL changes) and the UI stays stable with no repeated requests.",
+  "hint": "An effect that fetches data is re-running on every render. Check dependency arrays for unstable references.",
+  "symptom": "Flight details API is called repeatedly; loading flickers or network tab shows many requests for the same flight.",
+  "difficulty": "mid",
+  "competency": "React Data Fetching Strategies",
+  "bugFilePath": "src/pages/FlightDetailPage.jsx",
+  "solution": "Remove the unstable dependency from the useEffect that fetches flight details. The dependency array should list only flightId so the effect runs when the route param changes, not on every render.",
+  "solutionCode": "  }, [flightId]);",
+  "buggyCode": "  }, [flightId, {}]);",
+  "playwrightTests": ["tests/flight-detail-fetch.spec.js"],
+  "playwrightTestSnippets": [
+    "test('flight detail fetches once and shows continue button', async ({ page }) => { ... await expect(page.getByTestId('flight-detail-continue-btn')).toBeVisible(); expect(flightDetailRequestCount).toBe(1); })"
+  ]
+}

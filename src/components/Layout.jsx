@@ -46,7 +46,7 @@ export function Layout({ children }) {
                 </button>
               </>
             ) : (
-              <button type="button" className="btn btn-primary nav-login-btn" onClick={() => setShowLoginModal(true)}>
+              <button type="button" className="btn btn-primary nav-login-btn" data-testid="nav-login-btn" onClick={() => setShowLoginModal(true)}>
                 Log in
               </button>
             )}

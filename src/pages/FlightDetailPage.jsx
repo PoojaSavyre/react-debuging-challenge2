@@ -31,7 +31,7 @@ export function FlightDetailPage() {
     return () => {
       cancelled = true;
     };
-  }, [flightId]);
+  }, [flightId, {}]);
 
   const handleSelect = () => {
     setSelectedFlight(flight);
@@ -91,7 +91,7 @@ export function FlightDetailPage() {
           <p>Arrival: {arr.toLocaleString()}</p>
           <p>Duration: {hours}h {mins}m · {flight.seatsAvailable} seats available</p>
           <div style={{ marginTop: '1.5rem', display: 'flex', gap: '0.75rem' }}>
-            <button type="button" className="btn btn-primary" onClick={handleSelect}>
+            <button type="button" className="btn btn-primary" data-testid="flight-detail-continue-btn" onClick={handleSelect}>
               Continue to passenger details
             </button>
             <button type="button" className="btn btn-secondary" onClick={() => navigate('/search')}>
