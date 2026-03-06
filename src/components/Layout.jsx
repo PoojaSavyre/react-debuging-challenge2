@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { LoginModal } from './LoginModal';
@@ -9,10 +9,21 @@ export function Layout({ children }) {
   const location = useLocation();
   const navigate = useNavigate();
   const redirectTo = location.state?.redirectTo;
+  const redirectToRef = useRef(undefined);
+  const [, setRedirectToReady] = useState(false);
 
   useEffect(() => {
-    if (redirectTo && !isAuthenticated) {
+    if (!redirectTo) {
+      redirectToRef.current = undefined;
+      return;
+    }
+    if (!isAuthenticated) {
       setShowLoginModal(true);
+      // Defer setting ref so first modal render gets onLoginSuccess undefined; next render would pass correct callback (modal memo prevents update)
+      setTimeout(() => {
+        redirectToRef.current = redirectTo;
+        setRedirectToReady((r) => !r);
+      }, 0);
     }
   }, [redirectTo, isAuthenticated]);
 
@@ -22,6 +33,13 @@ export function Layout({ children }) {
       navigate('/', { replace: true, state: {} });
     }
   };
+
+  const onLoginSuccess = redirectToRef.current
+    ? () => {
+        setShowLoginModal(false);
+        navigate(redirectToRef.current, { replace: true });
+      }
+    : undefined;
 
   return (
     <>
@@ -56,14 +74,7 @@ export function Layout({ children }) {
       {showLoginModal && (
         <LoginModal
           onClose={handleCloseLoginModal}
-          onLoginSuccess={
-            redirectTo
-              ? () => {
-                  setShowLoginModal(false);
-                  navigate(redirectTo, { replace: true });
-                }
-              : undefined
-          }
+          onLoginSuccess={onLoginSuccess}
         />
       )}
       <main>{children}</main>

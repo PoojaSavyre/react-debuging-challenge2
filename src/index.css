@@ -94,8 +94,10 @@ textarea {
   color: white;
 }
 
-.btn-primary:hover {
+.btn-primary:hover,
+a.btn-primary:hover {
   background: var(--primary-dark);
+  color: white;
 }
 
 .btn-lg {
@@ -707,6 +709,13 @@ textarea {
   color: var(--text-muted);
   font-size: 0.9rem;
   margin-bottom: 1.25rem;
+}
+
+.login-hint {
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  margin-bottom: 1rem;
+  font-style: italic;
 }
 
 .login-form .form-group {

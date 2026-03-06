@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, memo } from 'react';
 import { useAuth } from '../context/AuthContext';
 
-export function LoginModal({ onClose, onLoginSuccess }) {
+function LoginModalComponent({ onClose, onLoginSuccess }) {
   const { login } = useAuth();
   const [loginName, setLoginName] = useState('');
   const [loginEmail, setLoginEmail] = useState('');
@@ -30,10 +30,11 @@ export function LoginModal({ onClose, onLoginSuccess }) {
   };
 
   return (
-    <div className="modal-overlay" onClick={onClose} role="dialog" aria-modal="true" aria-labelledby="login-modal-title">
+    <div className="modal-overlay" onClick={onClose} role="dialog" aria-modal="true" aria-labelledby="login-modal-title" data-testid="login-modal">
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
         <h2 id="login-modal-title" className="login-title">Log in</h2>
         <p className="login-desc">Sign in to complete booking (passengers, seats, review).</p>
+        <p className="login-hint" aria-hidden="true">Hint: use john / john@gmail.com</p>
         <form onSubmit={handleSubmit} className="login-form">
           {loginError && (
             <p className="form-error" style={{ marginBottom: '0.5rem' }}>{loginError}</p>
@@ -45,6 +46,7 @@ export function LoginModal({ onClose, onLoginSuccess }) {
               type="text"
               value={loginName}
               onChange={(e) => setLoginName(e.target.value)}
+              placeholder="e.g. john"
               required
             />
           </div>
@@ -55,6 +57,7 @@ export function LoginModal({ onClose, onLoginSuccess }) {
               type="email"
               value={loginEmail}
               onChange={(e) => setLoginEmail(e.target.value)}
+              placeholder="e.g. john@gmail.com"
               required
             />
           </div>
@@ -71,3 +74,5 @@ export function LoginModal({ onClose, onLoginSuccess }) {
     </div>
   );
 }
+
+export const LoginModal = memo(LoginModalComponent, () => true);

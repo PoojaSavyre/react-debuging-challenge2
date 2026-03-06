@@ -1,0 +1,17 @@
+{
+  "description": "When the user continues the booking and reaches a protected page (e.g. Passengers), the app redirects to home and shows the login modal. After they log in successfully, they remain on the home page instead of being taken to the protected page (e.g. /passengers) to continue.",
+  "expectedOutcome": "When the user logs in from the modal that was shown after hitting a protected route, they should be redirected to that protected page so they can continue the booking.",
+  "hint": "The login modal is memoized with a custom comparison that prevents it from receiving updated props when the intended redirect target is set.",
+  "symptom": "Logging in from the redirect modal does not navigate the user to the protected page; they stay on the home page.",
+  "difficulty": "entry",
+  "competency": "React Component Patterns",
+  "bugFilePath": "src/components/LoginModal.jsx",
+  "solution": "Remove the custom comparator from memo so the modal re-renders when props (onLoginSuccess, onClose) change; use the default shallow comparison by passing only one argument to memo.",
+  "solutionCode": "export const LoginModal = memo(LoginModalComponent);",
+  "exactBuggyCode": "export const LoginModal = memo(LoginModalComponent, () => true);",
+  "exactCorrectFix": "export const LoginModal = memo(LoginModalComponent);",
+  "playwrightTests": ["tests/auth-redirect.spec.cjs"],
+  "playwrightTestSnippets": [
+    "test('when user hits protected page, login modal appears; after login user is redirected to that page', async ({ page }) => { ... await page.goto('/passengers'); ... await expect(page.getByTestId('login-modal')).toBeVisible(); ... await expect(page).toHaveURL(/\\/passengers/); await expect(page.getByTestId('page-passengers')).toBeVisible(); });"
+  ]
+}
