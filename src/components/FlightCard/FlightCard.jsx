@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import { Link } from 'react-router-dom';
+import { AppLink } from '../AppLink';
 import PropTypes from 'prop-types';
 
 function FlightCardComponent({ flight }) {
@@ -26,9 +26,9 @@ function FlightCardComponent({ flight }) {
           <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>{hours}h {mins}m</div>
         </div>
         <div className="flight-card-price">₹{flight.price.toLocaleString()}</div>
-        <Link to={`/flight/${flight.id}`} className="btn btn-primary">
+        <AppLink to={`/flight/${flight.id}`} className="btn btn-primary" data-testid="flight-card-select">
           Select
-        </Link>
+        </AppLink>
       </div>
     </div>
   );
