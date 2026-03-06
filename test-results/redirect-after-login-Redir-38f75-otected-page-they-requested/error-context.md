@@ -1,0 +1,125 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e2]:
+  - navigation [ref=e3]:
+    - generic [ref=e4]:
+      - generic [ref=e5]:
+        - link "SkyBook" [ref=e6] [cursor=pointer]:
+          - /url: /
+        - link "Search" [ref=e7] [cursor=pointer]:
+          - /url: /search
+        - link "About" [ref=e8] [cursor=pointer]:
+          - /url: /about
+        - link "Contact" [ref=e9] [cursor=pointer]:
+          - /url: /contact
+        - link "Help" [ref=e10] [cursor=pointer]:
+          - /url: /help
+        - link "Destinations" [ref=e11] [cursor=pointer]:
+          - /url: /destinations
+        - link "My Bookings" [ref=e12] [cursor=pointer]:
+          - /url: /my-bookings
+      - generic [ref=e13]:
+        - generic [ref=e14]: Test User
+        - button "Logout" [ref=e15] [cursor=pointer]
+  - main [ref=e16]:
+    - generic [ref=e17]:
+      - generic [ref=e20]:
+        - heading "Fly with confidence" [level=1] [ref=e21]
+        - paragraph [ref=e22]: Book domestic flights across India. Best prices, easy booking, and support when you need it.
+        - search "Flight search" [ref=e24]:
+          - generic [ref=e25]:
+            - generic [ref=e26]: From *
+            - combobox "From *" [ref=e27]:
+              - option "Select origin" [selected]
+              - option "DEL - Delhi"
+              - option "BOM - Mumbai"
+              - option "BLR - Bangalore"
+              - option "MAA - Chennai"
+              - option "CCU - Kolkata"
+              - option "PNQ - Pune"
+              - option "HYD - Hyderabad"
+              - option "COK - Kochi"
+              - option "GOI - Goa"
+              - option "AMD - Ahmedabad"
+          - generic [ref=e28]:
+            - generic [ref=e29]: To *
+            - combobox "To *" [ref=e30]:
+              - option "Select destination" [selected]
+              - option "DEL - Delhi"
+              - option "BOM - Mumbai"
+              - option "BLR - Bangalore"
+              - option "MAA - Chennai"
+              - option "CCU - Kolkata"
+              - option "PNQ - Pune"
+              - option "HYD - Hyderabad"
+              - option "COK - Kochi"
+              - option "GOI - Goa"
+              - option "AMD - Ahmedabad"
+          - generic [ref=e31]:
+            - generic [ref=e32]: Date *
+            - textbox "Date *" [ref=e33]
+          - generic [ref=e34]:
+            - generic [ref=e35]: Passengers
+            - spinbutton "Passengers" [ref=e36]: "1"
+          - button "Search Flights" [ref=e37] [cursor=pointer]
+      - generic [ref=e39]:
+        - heading "Why choose SkyBook" [level=2] [ref=e40]
+        - generic [ref=e41]:
+          - generic [ref=e42]:
+            - generic [ref=e43]: ✈️
+            - heading "Wide network" [level=3] [ref=e44]
+            - paragraph [ref=e45]: "Flights to 10+ cities: Delhi, Mumbai, Bangalore, Chennai, Pune, and more."
+          - generic [ref=e46]:
+            - generic [ref=e47]: 💰
+            - heading "Best prices" [level=3] [ref=e48]
+            - paragraph [ref=e49]: Compare airlines and times. No hidden fees—see the full price before you book.
+          - generic [ref=e50]:
+            - generic [ref=e51]: 🎫
+            - heading "Simple booking" [level=3] [ref=e52]
+            - paragraph [ref=e53]: Pick your flight, add passengers, choose seats, and you’re done.
+          - generic [ref=e54]:
+            - generic [ref=e55]: 🛡️
+            - heading "Secure & reliable" [level=3] [ref=e56]
+            - paragraph [ref=e57]: Your data is safe. Instant confirmation and booking ID for every trip.
+      - generic [ref=e59]:
+        - paragraph [ref=e60]: Ready to travel? Start your search above or go straight to results.
+        - link "Search flights" [ref=e61] [cursor=pointer]:
+          - /url: /search
+      - generic [ref=e63]:
+        - generic [ref=e64]:
+          - generic [ref=e65]:
+            - heading "Company" [level=4] [ref=e66]
+            - list [ref=e67]:
+              - listitem [ref=e68]:
+                - link "About" [ref=e69] [cursor=pointer]:
+                  - /url: /about
+              - listitem [ref=e70]:
+                - link "Contact" [ref=e71] [cursor=pointer]:
+                  - /url: /contact
+              - listitem [ref=e72]:
+                - link "Help" [ref=e73] [cursor=pointer]:
+                  - /url: /help
+          - generic [ref=e74]:
+            - heading "Legal" [level=4] [ref=e75]
+            - list [ref=e76]:
+              - listitem [ref=e77]:
+                - link "Terms" [ref=e78] [cursor=pointer]:
+                  - /url: /terms
+              - listitem [ref=e79]:
+                - link "Privacy" [ref=e80] [cursor=pointer]:
+                  - /url: /privacy
+          - generic [ref=e81]:
+            - heading "Explore" [level=4] [ref=e82]
+            - list [ref=e83]:
+              - listitem [ref=e84]:
+                - link "Destinations" [ref=e85] [cursor=pointer]:
+                  - /url: /destinations
+              - listitem [ref=e86]:
+                - link "Offers" [ref=e87] [cursor=pointer]:
+                  - /url: /offers
+              - listitem [ref=e88]:
+                - link "My Bookings" [ref=e89] [cursor=pointer]:
+                  - /url: /my-bookings
+        - paragraph [ref=e91]: © SkyBook. Flight booking made simple.
+```

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { LoginModal } from './LoginModal';
@@ -23,6 +23,14 @@ export function Layout({ children }) {
     }
   };
 
+  // Memoized to avoid LoginModal re-renders; redirectTo/navigate are stable enough for this callback.
+  const onLoginSuccess = useCallback(() => {
+    setShowLoginModal(false);
+    if (redirectTo) {
+      navigate(redirectTo, { replace: true });
+    }
+  }, []);
+
   return (
     <>
       <nav className="nav">
@@ -34,7 +42,6 @@ export function Layout({ children }) {
             <Link to="/contact">Contact</Link>
             <Link to="/help">Help</Link>
             <Link to="/destinations">Destinations</Link>
-            <Link to="/offers">Offers</Link>
             <Link to="/my-bookings">My Bookings</Link>
           </div>
           <div className="nav-right">
@@ -56,14 +63,7 @@ export function Layout({ children }) {
       {showLoginModal && (
         <LoginModal
           onClose={handleCloseLoginModal}
-          onLoginSuccess={
-            redirectTo
-              ? () => {
-                  setShowLoginModal(false);
-                  navigate(redirectTo, { replace: true });
-                }
-              : undefined
-          }
+          onLoginSuccess={redirectTo ? onLoginSuccess : undefined}
         />
       )}
       <main>{children}</main>

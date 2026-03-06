@@ -30,7 +30,7 @@ export function LoginModal({ onClose, onLoginSuccess }) {
   };
 
   return (
-    <div className="modal-overlay" onClick={onClose} role="dialog" aria-modal="true" aria-labelledby="login-modal-title">
+    <div className="modal-overlay" data-testid="login-modal" onClick={onClose} role="dialog" aria-modal="true" aria-labelledby="login-modal-title">
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
         <h2 id="login-modal-title" className="login-title">Log in</h2>
         <p className="login-desc">Sign in to complete booking (passengers, seats, review).</p>

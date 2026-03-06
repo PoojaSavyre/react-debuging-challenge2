@@ -1,0 +1,22 @@
+{
+  "competency": "React Component Memoization",
+  "difficulty": "mid",
+  "bugFilePath": "src/components/Layout.jsx",
+  "description": "After being redirected to the home page from a protected route (e.g. Passengers), the user logs in via the modal but is not taken to the page they originally wanted; they remain on the home page instead of being redirected to the protected route.",
+  "expectedOutcome": "After logging in from the login modal (when that modal was shown after trying to access a protected route), the user should be redirected to the originally requested protected route (e.g. /passengers).",
+  "hint": "A callback passed to the login modal is memoized with an empty dependency array, so it closes over stale values.",
+  "symptom": "Post-login redirect to the intended protected page does not occur; user stays on home.",
+  "solution": "Include redirectTo and navigate in the useCallback dependency array so the callback always uses the current redirect target.",
+  "buggyCode": "  const onLoginSuccess = useCallback(() => {\n    setShowLoginModal(false);\n    if (redirectTo) {\n      navigate(redirectTo, { replace: true });\n    }\n  }, []);",
+  "solutionCode": "  const onLoginSuccess = useCallback(() => {\n    setShowLoginModal(false);\n    if (redirectTo) {\n      navigate(redirectTo, { replace: true });\n    }\n  }, [redirectTo, navigate]);",
+  "playwrightTests": ["tests/redirect-after-login.spec.cjs"],
+  "playwrightTestSnippets": [
+    "await page.goto('/');",
+    "await page.goto(baseURL + '/passengers');",
+    "await expect(page.getByTestId('login-modal')).toBeVisible();",
+    "await page.getByRole('textbox', { name: /name/i }).fill('Test User');",
+    "await page.getByRole('textbox', { name: /email/i }).fill('test@example.com');",
+    "await page.getByRole('button', { name: /log in/i }).click();",
+    "await expect(page).toHaveURL(/\\/passengers|\\/search/);"
+  ]
+}
