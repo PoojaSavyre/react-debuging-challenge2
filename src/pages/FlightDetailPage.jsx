@@ -7,7 +7,7 @@ import { PageHeader } from '../components/PageHeader';
 export function FlightDetailPage() {
   const { flightId } = useParams();
   const navigate = useNavigate();
-  const { setSelectedFlight } = useBooking();
+  const { setSelectedFlight, selectedFlight } = useBooking();
   const [flight, setFlight] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -16,7 +16,8 @@ export function FlightDetailPage() {
     let cancelled = false;
     setLoading(true);
     setError(null);
-    apiRequest(`api/flights/${encodeURIComponent(flightId)}`)
+    const idToFetch = selectedFlight?.id ?? flightId;
+    apiRequest(`api/flights/${encodeURIComponent(idToFetch)}`)
       .then((data) => {
         if (!cancelled) setFlight(data);
       })
@@ -31,7 +32,7 @@ export function FlightDetailPage() {
     return () => {
       cancelled = true;
     };
-  }, [flightId]);
+  }, [flightId, selectedFlight?.id]);
 
   const handleSelect = () => {
     setSelectedFlight(flight);
@@ -79,11 +80,11 @@ export function FlightDetailPage() {
         subtitle={`${flight.origin} → ${flight.destination}`}
       />
       <div className="container">
-        <div className="content-section">
+        <div className="content-section" data-testid="flight-detail-page">
           <div className="flight-card-row" style={{ marginBottom: '1rem' }}>
             <div>
               <div className="flight-card-airline">{flight.airline} {flight.flightNumber}</div>
-              <div className="flight-card-route">{flight.origin} → {flight.destination}</div>
+              <div className="flight-card-route" data-testid="flight-detail-route">{flight.origin} → {flight.destination}</div>
             </div>
             <div className="flight-card-price">₹{flight.price.toLocaleString()}</div>
           </div>

@@ -1,0 +1,43 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e2]:
+  - navigation [ref=e3]:
+    - generic [ref=e4]:
+      - generic [ref=e5]:
+        - link "SkyBook" [ref=e6] [cursor=pointer]:
+          - /url: /
+        - link "Search" [ref=e7] [cursor=pointer]:
+          - /url: /search
+        - link "About" [ref=e8] [cursor=pointer]:
+          - /url: /about
+        - link "Contact" [ref=e9] [cursor=pointer]:
+          - /url: /contact
+        - link "Help" [ref=e10] [cursor=pointer]:
+          - /url: /help
+        - link "Destinations" [ref=e11] [cursor=pointer]:
+          - /url: /destinations
+        - link "Offers" [ref=e12] [cursor=pointer]:
+          - /url: /offers
+        - link "My Bookings" [ref=e13] [cursor=pointer]:
+          - /url: /my-bookings
+      - generic [ref=e14]:
+        - generic [ref=e15]: Test User
+        - button "Logout" [ref=e16] [cursor=pointer]
+  - main [ref=e17]:
+    - generic [ref=e19]:
+      - heading "SkyWings SW101" [level=1] [ref=e20]
+      - paragraph [ref=e21]: DEL → BOM
+    - generic [ref=e23]:
+      - generic [ref=e24]:
+        - generic [ref=e25]:
+          - generic [ref=e26]: SkyWings SW101
+          - generic [ref=e27]: DEL → BOM
+        - generic [ref=e28]: ₹4,500
+      - paragraph [ref=e29]: "Departure: 3/15/2025, 8:00:00 AM"
+      - paragraph [ref=e30]: "Arrival: 3/15/2025, 10:15:00 AM"
+      - paragraph [ref=e31]: "Duration: 2h 15m · 12 seats available"
+      - generic [ref=e32]:
+        - button "Continue to passenger details" [ref=e33] [cursor=pointer]
+        - button "Back to results" [ref=e34] [cursor=pointer]
+```

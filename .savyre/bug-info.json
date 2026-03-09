@@ -1,0 +1,15 @@
+{
+  "competency": "React Data Fetching Strategies",
+  "difficulty": "mid",
+  "bugFilePath": "src/pages/FlightDetailPage.jsx",
+  "description": "When the user selects one flight from search results, continues to passenger details, then goes back and selects a different flight from the list (e.g. clicks 'Back to results' and then chooses another flight), the detail page shows the wrong flight—the first one they had selected, not the one they just clicked. The user never typed any flight code; they only clicked links.",
+  "expectedOutcome": "The flight detail page always shows the flight the user is currently viewing—i.e. the one they just clicked from the list. After going back and selecting a different flight, that new flight's details must be shown.",
+  "hint": "The page should show the flight for the current route. Where is the fetch getting its id from—the URL or somewhere else?",
+  "symptom": "After selecting one flight and continuing, then going back and picking another flight, the detail page still shows the first flight (wrong one).",
+  "solution": "Fetch the flight using only the route param flightId from useParams(). Do not use selectedFlight from BookingContext to decide which flight to fetch; context is for storing the user's choice after they confirm, not for determining what to load on the detail page.",
+  "solutionCode": "In FlightDetailPage.jsx: (1) Remove selectedFlight from useBooking() destructuring. (2) In the useEffect, call the API with flightId only: apiRequest(`api/flights/${encodeURIComponent(flightId)}`). (3) Set the effect dependency array to [flightId] only.",
+  "playwrightTests": ["tests/flight-detail-context.spec.cjs"],
+  "playwrightTestSnippets": [
+    "Stub api/auth/me and api/flights/:id. User flow: view first flight (FL-101), click Continue, then navigate to second flight (FL-201) as if they went back and clicked another result; expect page to show second flight (BLR), not first (BOM)."
+  ]
+}
