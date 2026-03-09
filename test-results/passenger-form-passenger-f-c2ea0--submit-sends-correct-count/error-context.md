@@ -1,0 +1,73 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e2]:
+  - navigation [ref=e3]:
+    - generic [ref=e4]:
+      - generic [ref=e5]:
+        - link "SkyBook" [ref=e6] [cursor=pointer]:
+          - /url: /
+        - link "Search" [ref=e7] [cursor=pointer]:
+          - /url: /search
+        - link "About" [ref=e8] [cursor=pointer]:
+          - /url: /about
+        - link "Contact" [ref=e9] [cursor=pointer]:
+          - /url: /contact
+        - link "Help" [ref=e10] [cursor=pointer]:
+          - /url: /help
+        - link "Destinations" [ref=e11] [cursor=pointer]:
+          - /url: /destinations
+        - link "Offers" [ref=e12] [cursor=pointer]:
+          - /url: /offers
+        - link "My Bookings" [ref=e13] [cursor=pointer]:
+          - /url: /my-bookings
+      - generic [ref=e14]:
+        - generic [ref=e15]: E2E Test User
+        - button "Logout" [ref=e16] [cursor=pointer]
+  - main [ref=e17]:
+    - generic [ref=e19]:
+      - heading "Select seats" [level=1] [ref=e20]
+      - paragraph [ref=e21]: "Passenger 1 of 2: Alice One"
+    - generic [ref=e23]:
+      - paragraph [ref=e24]: "Passenger 1 of 2: Alice One"
+      - group "Seat map" [ref=e26]:
+        - button "Seat A1 available" [ref=e27] [cursor=pointer]: A1
+        - button "Seat A2 occupied" [disabled] [ref=e28]: A2
+        - button "Seat A3 available" [ref=e29] [cursor=pointer]: A3
+        - button "Seat A4 available" [ref=e30] [cursor=pointer]: A4
+        - button "Seat A5 available" [ref=e31] [cursor=pointer]: A5
+        - button "Seat A6 available" [ref=e32] [cursor=pointer]: A6
+        - button "Seat B1 available" [ref=e33] [cursor=pointer]: B1
+        - button "Seat B2 available" [ref=e34] [cursor=pointer]: B2
+        - button "Seat B3 occupied" [disabled] [ref=e35]: B3
+        - button "Seat B4 available" [ref=e36] [cursor=pointer]: B4
+        - button "Seat B5 available" [ref=e37] [cursor=pointer]: B5
+        - button "Seat B6 available" [ref=e38] [cursor=pointer]: B6
+        - button "Seat C1 occupied" [disabled] [ref=e39]: C1
+        - button "Seat C2 available" [ref=e40] [cursor=pointer]: C2
+        - button "Seat C3 available" [ref=e41] [cursor=pointer]: C3
+        - button "Seat C4 available" [ref=e42] [cursor=pointer]: C4
+        - button "Seat C5 available" [ref=e43] [cursor=pointer]: C5
+        - button "Seat C6 available" [ref=e44] [cursor=pointer]: C6
+        - button "Seat D1 available" [ref=e45] [cursor=pointer]: D1
+        - button "Seat D2 available" [ref=e46] [cursor=pointer]: D2
+        - button "Seat D3 available" [ref=e47] [cursor=pointer]: D3
+        - button "Seat D4 occupied" [disabled] [ref=e48]: D4
+        - button "Seat D5 available" [ref=e49] [cursor=pointer]: D5
+        - button "Seat D6 available" [ref=e50] [cursor=pointer]: D6
+        - button "Seat E1 available" [ref=e51] [cursor=pointer]: E1
+        - button "Seat E2 occupied" [disabled] [ref=e52]: E2
+        - button "Seat E3 available" [ref=e53] [cursor=pointer]: E3
+        - button "Seat E4 available" [ref=e54] [cursor=pointer]: E4
+        - button "Seat E5 available" [ref=e55] [cursor=pointer]: E5
+        - button "Seat E6 available" [ref=e56] [cursor=pointer]: E6
+        - button "Seat F1 available" [ref=e57] [cursor=pointer]: F1
+        - button "Seat F2 available" [ref=e58] [cursor=pointer]: F2
+        - button "Seat F3 available" [ref=e59] [cursor=pointer]: F3
+        - button "Seat F4 available" [ref=e60] [cursor=pointer]: F4
+        - button "Seat F5 occupied" [disabled] [ref=e61]: F5
+        - button "Seat F6 available" [ref=e62] [cursor=pointer]: F6
+      - generic [ref=e63]:
+        - button "Back" [ref=e64] [cursor=pointer]
+        - button "Next passenger" [ref=e65] [cursor=pointer]
+```

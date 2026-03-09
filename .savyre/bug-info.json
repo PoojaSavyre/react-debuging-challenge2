@@ -1,0 +1,16 @@
+{
+  "description": "On the Passenger details page, when the user changes the 'Number of passengers' dropdown (e.g. from 3 to 4) and fills all passenger fields, the form submits but only the initial count is sent. The seat selection and review pages show the old count (e.g. 3 passengers) instead of the new count (e.g. 4).",
+  "expectedOutcome": "When the user changes the number of passengers and fills in all displayed passenger fields, the submitted data must match the current count; the seat selection and review pages should show that same number of passengers.",
+  "hint": "The submit handler uses a ref that is set once and never updated when the passenger count changes; the payload is sliced to that stale count so the form state update (new passenger count) is ignored.",
+  "symptom": "After increasing the number of passengers via the dropdown and filling the form, the next pages (seats, review) show the original passenger count, not the updated one.",
+  "difficulty": "mid",
+  "competency": "React Hook Form Management",
+  "bugFilePath": "src/pages/PassengerFormPage.jsx",
+  "solution": "Keep the submitted passenger count in sync with the current passenger count: update the ref when passengerCount changes, and in onSubmit use the full data.passengers array (or slice to passengerCount) instead of slicing to the ref.",
+  "solutionCode": "  useEffect(() => {\n    submittedCountRef.current = passengerCount;\n  }, [passengerCount]);\n  // and in onSubmit use: const toSubmit = raw.slice(0, passengerCount); or simply: const passengers = (data.passengers || []).map(...)",
+  "buggyCode": "  const submittedCountRef = useRef(initialCount);  // never updated\n  // in onSubmit: const toSubmit = raw.slice(0, submittedCountRef.current);",
+  "playwrightTests": ["tests/passenger-form.spec.cjs"],
+  "playwrightTestSnippets": [
+    "test('passenger form state updates when passenger count changes and submit sends correct count', async ({ page }) => {\n  // ... navigate to passenger form, select 3 passengers, fill all 3, submit\n  await expect(page.getByTestId('passenger-count-label')).toContainText('of 3');\n});"
+  ]
+}

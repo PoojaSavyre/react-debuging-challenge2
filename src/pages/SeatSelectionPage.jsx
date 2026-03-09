@@ -50,9 +50,9 @@ export function SeatSelectionPage() {
         title="Select seats"
         subtitle={currentPassenger ? `Passenger ${currentPassengerIndex + 1} of ${passengers.length}: ${currentPassenger.name}` : 'Choose your seat'}
       />
-      <div className="container">
+      <div className="container" data-testid="seat-selection-page">
         <div className="content-section">
-      <p>
+      <p data-testid="passenger-count-label">
         Passenger {currentPassengerIndex + 1} of {passengers.length}: {currentPassenger?.name}
       </p>
       <div className="card">
