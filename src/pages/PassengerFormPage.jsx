@@ -116,7 +116,7 @@ export function PassengerFormPage() {
         title="Passenger details"
         subtitle={`${passengerCount} passenger(s) · ${selectedFlight?.airline} ${selectedFlight?.flightNumber}`}
       />
-      <div className="container">
+      <div className="container" data-testid="passenger-details-page">
         <FormProvider {...methods}>
           <form onSubmit={handleSubmit(onSubmit)} className="content-section">
             <PassengerFields

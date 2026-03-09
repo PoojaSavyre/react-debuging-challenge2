@@ -1,0 +1,49 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e2]:
+  - navigation [ref=e3]:
+    - generic [ref=e4]:
+      - generic [ref=e5]:
+        - link "SkyBook" [ref=e6] [cursor=pointer]:
+          - /url: /
+        - link "Search" [ref=e7] [cursor=pointer]:
+          - /url: /search
+        - link "About" [ref=e8] [cursor=pointer]:
+          - /url: /about
+        - link "Contact" [ref=e9] [cursor=pointer]:
+          - /url: /contact
+        - link "Help" [ref=e10] [cursor=pointer]:
+          - /url: /help
+        - link "Destinations" [ref=e11] [cursor=pointer]:
+          - /url: /destinations
+        - link "Offers" [ref=e12] [cursor=pointer]:
+          - /url: /offers
+        - link "My Bookings" [ref=e13] [cursor=pointer]:
+          - /url: /my-bookings
+      - generic [ref=e14]:
+        - generic [ref=e15]: E2E User
+        - button "Logout" [ref=e16] [cursor=pointer]
+  - main [ref=e17]:
+    - generic [ref=e19]:
+      - heading "DEL → BOM" [level=1] [ref=e20]
+      - paragraph [ref=e21]: 1 flight(s) found
+    - generic [ref=e22]:
+      - generic [ref=e23]:
+        - heading "Choose a flight" [level=2] [ref=e24]
+        - generic [ref=e25]:
+          - generic [ref=e26]: Sort by
+          - combobox "Sort by" [ref=e27]:
+            - option "Departure time" [selected]
+            - option "Price"
+      - generic [ref=e29]:
+        - generic [ref=e30]:
+          - generic [ref=e31]: SkyJet SJ 101
+          - generic [ref=e32]: DEL → BOM · 6 seats left
+        - generic [ref=e33]:
+          - generic [ref=e34]: 01:30 pm → 03:40 pm
+          - generic [ref=e35]: 2h 10m
+        - generic [ref=e36]: ₹5,499
+        - link "Select" [ref=e37] [cursor=pointer]:
+          - /url: /flight/f-100
+```

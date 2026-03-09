@@ -1,0 +1,18 @@
+{
+  "description": "After selecting a flight and clicking 'Continue to passenger details' on the flight detail page, the user is redirected back to the search page instead of seeing the passenger form. The passenger step never shows the chosen flight.",
+  "expectedOutcome": "After clicking Continue on the flight detail page, the user remains on the passenger details page and sees the chosen flight (e.g. airline and flight number) in the header; they can complete passenger details and proceed through seats, baggage, and review.",
+  "hint": "Context state updates are asynchronous; ensure the next page receives the selected flight (e.g. via navigation state) and syncs it to context on mount.",
+  "symptom": "User is sent back to search after clicking Continue to passenger details, or the passenger page shows no flight.",
+  "difficulty": "mid",
+  "competency": "React State Synchronization",
+  "bugFilePath": "src/pages/FlightDetailPage.jsx",
+  "solution": "Synchronize the selected flight across the navigation boundary: (1) In FlightDetailPage, pass the flight in the navigate state when going to /passengers. (2) In PassengerFormPage, read location.state.flight on mount and call setSelectedFlight(flight) so the booking context has the flight before the redirect check runs.",
+  "solutionCode": {
+    "src/pages/FlightDetailPage.jsx": "const handleSelect = () => {\n    setSelectedFlight(flight);\n    navigate('/passengers', { state: { flight } });\n  };",
+    "src/pages/PassengerFormPage.jsx": "Add: useLocation in imports and destructure setSelectedFlight from useBooking(). Add useEffect: const location = useLocation(); useEffect(() => { const f = location.state?.flight; if (f) setSelectedFlight(f); }, [location.state, setSelectedFlight]);"
+  },
+  "playwrightTests": ["tests/booking-flow.spec.js"],
+  "playwrightTestSnippets": [
+    "test('can continue from flight details to passenger details', async ({ page }) => {\n    await page.goto('/');\n    await page.getByLabel(/From/i).selectOption('DEL');\n    await page.getByLabel(/To/i).selectOption('BOM');\n    await page.getByLabel(/Date/i).fill('2026-04-01');\n    await page.getByLabel(/Passengers/i).fill('1');\n    await page.getByRole('button', { name: /search flights/i }).click();\n    const flightCard = page.getByTestId('flight-card').first();\n    await flightCard.getByRole('link', { name: /select/i }).click();\n    await expect(page.getByTestId('continue-to-passengers')).toBeVisible();\n    await page.getByTestId('continue-to-passengers').click();\n    await expect(page).toHaveURL(/\\/passengers$/);\n    await expect(page.getByRole('heading', { name: /passenger details/i })).toBeVisible();\n    await expect(page.getByTestId('passenger-details-page')).toBeVisible();\n  });"
+  ]
+}
