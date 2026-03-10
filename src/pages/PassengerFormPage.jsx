@@ -51,6 +51,8 @@ function PassengerFields({ passengerCount, register, errors }) {
             <input
               id={`passengers.${i}.phone`}
               type="tel"
+              data-testid={`passenger-${i}-phone`}
+              placeholder="Enter phone number"
               {...register(`passengers.${i}.phone`)}
             />
           </div>
